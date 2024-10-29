@@ -1,19 +1,19 @@
 /* General container */
 .login-container {
+  width: 100vw; /* Largura total da viewport */
+  height: 100vh; /* Altura total da viewport */
   display: flex;
-  height: 100vh;
   background-image: url('./../../public/assets/AFILIADO.png');
   background-size: cover; /* A imagem irá cobrir todo o fundo */
   background-position: center; /* A imagem será centralizada */
   background-repeat: no-repeat; /* Impede que a imagem se repita */
-  
+  background-attachment: fixed; /* Fixa o background durante o scroll */
 }
-.body{
-  background-image: url('./../../public/assets/AFILIADO.png');
-  background-size: cover; /* A imagem irá cobrir todo o fundo */
-  background-position: center; /* A imagem será centralizada */
-  background-repeat: no-repeat; /* Impede que a imagem se repita */
-   
+
+.body {
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
 }
 
 /* Left section styling */
@@ -26,9 +26,6 @@
   align-items: center;
   padding: 20px;
   position: relative;
-  /* background-image: url('/path-to-your-background-image.jpg'); Add background image */
-  background-size: cover;
-  background-position: center;
 }
 
 .login-left h1 {
@@ -57,8 +54,6 @@
 
 .login-right h2 {
   text-align: center;
-  align-items: center;
-  justify-content: center;
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 10px;
@@ -86,10 +81,9 @@
   font-size: 16px;
 }
 
-/* Estilo do placeholder */
 .input-group input::placeholder {
-  color: white; /* Define a cor do placeholder */
-  opacity: 0.7; /* Torna o placeholder um pouco mais transparente */
+  color: white;
+  opacity: 0.7;
 }
 
 .input-icon {
@@ -101,17 +95,10 @@
   color: white;
 }
 
-
-
-.password-icon:before {
-  content: "\f023"; /* Font Awesome lock icon */
-}
-
 /* Forgot password and register */
 .forgot-password, .register-link {
   margin-top: 10px;
   text-align: center;
-
 }
 
 .forgot-password a, .register-link a {
@@ -129,7 +116,6 @@
   cursor: pointer;
   width: 100%;
   max-width: 300px;
-  
 }
 
 .btn-submit:disabled {
@@ -156,7 +142,6 @@
   }
 }
 
-
 .container {
   display: flex;
   justify-content: center;
@@ -166,7 +151,7 @@
 }
 
 .login-form {
-  background: white; /* Ou a cor que desejar */
+  background: white;
   padding: 20px;
   border-radius: 10px;
   width: 100%;
@@ -178,10 +163,10 @@
 .entre-titulo {
   text-decoration: underline;
 }
-.titulo{
+
+.titulo {
   text-align: center;
   align-items: center;
   align-content: center;
   justify-content: center;
-
 }
