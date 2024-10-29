@@ -106,16 +106,16 @@ const App = () => {
         )}
       </nav> */}
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/user" element={<BoardUser />} />
-          <Route path="/mod" element={<BoardModerator />} />
-          <Route path="/admin" element={<BoardAdmin />} />
-        </Routes>
+<Routes>
+  <Route path="/" element={<Navigate to="/login" />} /> {/* Redireciona para /login */}
+  <Route path="/home" element={<Home />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/register" element={<Register />} />
+  <Route path="/profile" element={<Profile />} />
+  <Route path="/user" element={<BoardUser />} />
+  <Route path="/mod" element={<BoardModerator />} />
+  <Route path="/admin" element={<BoardAdmin />} />
+</Routes>
 
     </div>
   );
