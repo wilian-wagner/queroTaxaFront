@@ -503,7 +503,7 @@ const Profile = () => {
               <Button
                 variant="contained"
                 color="success"
-                className={`toggle-button-tabela`}
+                className='ajuda-btn'
               >
                 Perguntas frequentes
               </Button>
@@ -511,7 +511,7 @@ const Profile = () => {
                 variant="contained"
                 color="success"
                 onClick={() => alert('Iremos disponibilizar o mais breve possível')}
-                className="ajuda-btn"
+                className="ajuda-btn-2"
               >
                 Material Afiliado
               </Button>

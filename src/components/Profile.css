@@ -236,7 +236,7 @@ margin-left: 150px;
   .img-dropdown img{
     margin-left: 150px;
   }
-  .ajuda-btn button{
+  .ajuda-btn {
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -245,6 +245,17 @@ margin-left: 150px;
     transition: transform 0.2s ease;
     margin-left: 20px;
     background-color: #08fe95;
+
+}
+.ajuda-btn-2 {
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 15px;
+    transition: transform 0.2s ease;
+    margin-left: 20px;
+    background-color: #4d4d4c5d;
 
 }
 .ajuda-btn {

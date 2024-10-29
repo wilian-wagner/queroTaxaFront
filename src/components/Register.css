@@ -10,13 +10,11 @@
 body {
   font-family: Arial, sans-serif;
   color: #fff;
-  display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0;
   background-size: cover; /* A imagem irá cobrir todo o fundo */
-  background-position: center; /* A imagem será centralizada */
   background-repeat: no-repeat; /* Impede que a imagem se repita */
   background-attachment: fixed; /* Fixa o background durante o scroll */
 }
