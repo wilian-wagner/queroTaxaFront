@@ -1,43 +1,42 @@
 .flex-wrapper {
   display: flex;
-  justify-content: space-between; /* Mantém o espaço entre os lados */
+  justify-content: space-between;
   align-content: center;
-  gap: 100px; /* Aumenta o espaço entre as colunas */
+  gap: 20px;
   margin: 10px 0;
+  flex-wrap: wrap;
 }
-body {
-  /* background-image: url('./../../public/assets/BACGROUND_REGISTER.png') ; */
 
-  /* background-image: url('/path/to/your/background-image.jpg'); */
-  background-size: cover;
+body {
   font-family: Arial, sans-serif;
   color: #fff;
+  display: flex;
   justify-content: center;
-  /* Centraliza horizontalmente */
   align-items: center;
-  align-content: center;
-  /* Centraliza verticalmente */
   height: 100vh;
-  /* Garante que o corpo ocupe toda a altura da viewport */
   margin: 0;
-  /* Remove qualquer margem do body */
-}
-.left-side,
-.right-side {
-  
-  width: 48%; /* Define a largura de cada lado */
+  background-size: cover; /* A imagem irá cobrir todo o fundo */
+  background-position: center; /* A imagem será centralizada */
+  background-repeat: no-repeat; /* Impede que a imagem se repita */
+  background-attachment: fixed; /* Fixa o background durante o scroll */
 }
 
-.right-side{
-  align-content:center ;
+.left-side,
+.right-side {
+  width: 48%;
 }
+
+.right-side {
+  align-content: center;
+}
+
 input {
   width: 100%;
   padding: 15px;
   margin-bottom: 20px;
   border: 2px solid #ccc;
   border-radius: 5px;
-  color: wh;
+  color: white;
 }
 
 .register-container {
@@ -56,11 +55,10 @@ input {
   border-radius: 5px;
   cursor: pointer;
   font-size: 1.2em;
-  
 }
 
 .btn-submit:hover {
-  background-color:#08fe95;
+  background-color: #08fe95;
 }
 
 h2 {
@@ -76,17 +74,53 @@ p {
 .cadastro-titulo {
   text-decoration: underline;
 }
-input,select {
+
+input, select {
   padding: 15px;
-  border: none; /* Remove todas as bordas */
-  border-bottom: 2px solid white; /* Aplica a borda inferior branca */
-  border-radius: 0; /* Remove qualquer arredondamento */
+  border: none;
+  border-bottom: 2px solid white;
+  border-radius: 0;
   font-size: 1em;
   width: 100%;
   margin-bottom: 20px;
-  background-color: transparent; /* Torna o fundo transparente para evitar conflitos */
-  color: white; /* Garante que o texto dentro do input seja visível com o fundo */
+  background-color: transparent;
+  color: white;
 }
-option{
+
+option {
   color: black;
+}
+
+/* Media query para telas menores */
+@media (max-width: 768px) {
+  .flex-wrapper {
+    gap: 5px; /* Reduz o espaço entre elementos */
+    height: auto;
+  }
+
+  .left-side,
+  .right-side {
+    width: 100%;
+  }
+
+  .register-container {
+    padding: 20px;
+    margin-top: 130px;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  p {
+    font-size: 1em;
+  }
+
+  input {
+    padding: 10px;
+  }
+
+  .btn-submit {
+    padding: 10px;
+  }
 }
