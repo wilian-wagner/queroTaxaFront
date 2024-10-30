@@ -14,6 +14,8 @@ body {
     /* Garante que o corpo ocupe toda a altura da viewport */
     margin: 0;
     /* Remove qualquer margem do body */
+    background-repeat: no-repeat; /* Impede que a imagem se repita */
+
 }
 .tag-topo {
     position: absolute;
@@ -38,6 +40,7 @@ body {
     height: 50%;
     background-color: #30302f80;
     border-radius: 15px;
+    margin-top: 60px;
 }
 
 
