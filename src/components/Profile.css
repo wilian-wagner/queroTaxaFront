@@ -2,7 +2,7 @@ body {
     background-image: url('./../../public/assets/fundo_profile.png') !important ;
 
     /* ackground-image: url('/path/to/your/background-image.jpg'); */
-    background-size: cover;
+    background-size: 100vw 100vh;
     font-family: Arial, sans-serif;
     color: #fff;
     justify-content: center;
@@ -15,6 +15,9 @@ body {
     margin: 0;
     /* Remove qualquer margem do body */
     background-repeat: no-repeat; /* Impede que a imagem se repita */
+    background-position: center center;
+    background-attachment: fixed;
+
 
 }
 .tag-topo {
@@ -40,7 +43,7 @@ body {
     height: 50%;
     background-color: #30302f80;
     border-radius: 15px;
-    margin-top: 60px;
+    margin-top: 80px;
 }
 
 
