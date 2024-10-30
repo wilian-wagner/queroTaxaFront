@@ -285,7 +285,7 @@ const Profile = () => {
     navigator.clipboard.writeText(link_payments_querofacil[selectedIndex - 1]);
     alert('Link de pagamento copiado')
     setText(link_payments_querofacil[selectedIndex - 1])
-    setSelectedButtonpage(2) 
+    setSelectedButtonpage(2)
     setSelectedMaquina(0)
     setCheckin(0)
     setLinkPage(0)
@@ -307,7 +307,7 @@ const Profile = () => {
     navigator.clipboard.writeText(link_payments_querofaturar[selectedIndex - 1]);
     alert('Link de pagamento copiado')
     setText(link_payments_querofaturar[selectedIndex - 1])
-    setSelectedButtonpage(2) 
+    setSelectedButtonpage(2)
     setSelectedMaquina(0)
     setCheckin(0)
     setLinkPage(0)
@@ -329,7 +329,7 @@ const Profile = () => {
     navigator.clipboard.writeText(link_payments_queropromo[selectedIndex - 1]);
     alert('Link de pagamento copiado')
     setText(link_payments_queropromo[selectedIndex - 1])
-    setSelectedButtonpage(2) 
+    setSelectedButtonpage(2)
     setSelectedMaquina(0)
     setCheckin(0)
     setLinkPage(0)
@@ -339,11 +339,12 @@ const Profile = () => {
   }
   return (
     <div className='container-profile' style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-      <h3 className="tag-topo">{currentUser.username}
-        <a href="/login" className="nav-link" onClick={logOut}>
-          Sair
-        </a>
-      </h3>
+      <div class="top-bar">
+        <h3 class="tag-topo">
+          {currentUser.username}
+          <a href="/login" class="nav-link" onclick="logOut()">Sair</a>
+        </h3>
+      </div>
 
       {selectedMaquina === 1 && checkin == 0 && linkPage == 0 && maquina == 0 && (<div className="tabelas-taxas" >
         <div className="tabelas">
@@ -547,49 +548,49 @@ const Profile = () => {
               </div>
             ) : (
               <>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '20px', width: '100%' }}>
-                    <TextField
-                      value={text}
-                      variant="outlined"
-                      disabled
-                      InputProps={{
-                        disableUnderline: true,
-                        style: {
-                          color: '#ffffff',
-                        },
-                      }}
-                      sx={{
-                        '& .MuiOutlinedInput-root': {
-                          backgroundColor: '#444444',
-                          borderRadius: '8px',
-                        },
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: 'transparent',
-                        },
-                        '& .MuiInputBase-input.Mui-disabled': {
-                          WebkitTextFillColor: '#ffffff',
-                          opacity: 1,
-                        },
-                      }}
-                      style={{
-                        width: 'calc(100% - 200px)',
-                        height: '40px',
-                        boxSizing: 'border-box',
-                        marginBottom:'10px',
-                        marginLeft: '10px'
-                      }}
-                    />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '20px', width: '100%' }}>
+                  <TextField
+                    value={text}
+                    variant="outlined"
+                    disabled
+                    InputProps={{
+                      disableUnderline: true,
+                      style: {
+                        color: '#ffffff',
+                      },
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        backgroundColor: '#444444',
+                        borderRadius: '8px',
+                      },
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'transparent',
+                      },
+                      '& .MuiInputBase-input.Mui-disabled': {
+                        WebkitTextFillColor: '#ffffff',
+                        opacity: 1,
+                      },
+                    }}
+                    style={{
+                      width: 'calc(100% - 200px)',
+                      height: '40px',
+                      boxSizing: 'border-box',
+                      marginBottom: '10px',
+                      marginLeft: '10px'
+                    }}
+                  />
 
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={() => alert('copiar')}
-                      style={{ width: '250px', height: '50px' }}
-                      className="selecionar-taxa"
-                    >
-                      Copiar último link gerado
-                    </Button>
-                  </div>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => alert('copiar')}
+                    style={{ width: '250px', height: '50px' }}
+                    className="selecionar-taxa"
+                  >
+                    Copiar último link gerado
+                  </Button>
+                </div>
 
                 <div className="typography-data-container">
                   <Typography variant="h5" component="h2" style={{ color: "white" }}>
