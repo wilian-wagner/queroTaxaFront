@@ -17,6 +17,8 @@ import {
   BarElement,
 } from "chart.js";
 import "./Profile.css";
+import EventBus from "../common/EventBus";
+
 import Alert from "./alert";
 // import maquina from '../../assets/stripe-front/assets/maquininha150x200.png'
 
@@ -27,7 +29,7 @@ const Profile = () => {
   const currentUser = AuthService.getCurrentUser();
   const [valorVenda, setValorVenda] = useState("");
   const [option, setOption] = useState("quero faturar");
-  const [text, setText] = useState("Http://checkoutpipipi...");
+  const [text, setText] = useState("Ultimo Link Utilizado");
   const [payments, setPayments] = useState([]); // State to hold payment data
 
 
@@ -35,9 +37,16 @@ const Profile = () => {
   const [selectedMaquina, setSelectedMaquina] = useState(0);
   const [checkin, setCheckin] = useState(0);
   const [linkPage, setLinkPage] = useState(0);
+  const [links, setLinks] = useState([])
 
 
+  EventBus.on("logout", () => {
+    logOut();
+  });
 
+  const logOut = () => {
+    AuthService.logout();
+  };
 
   const avancarLink = async (state) => {
     setLinkPage(state)
@@ -62,12 +71,34 @@ const Profile = () => {
   const toggleQuestion = (id) => {
     setActiveQuestion(activeQuestion === id ? null : id);
   };
-  // Função para buscar dados de pagamento
+
+  // UseEffect para buscar os dados quando o componente é montado
   useEffect(() => {
     const fetchPayments = async () => {
-      const data = await fetchallPay();
-      setPayments(Array.isArray(data) ? data : []); // Certifica-se de que payments seja uma array
+      try {
+        const response = await axios.get('https://querotaxa.onrender.com/api/payment/links');
+        const payments = response.data;
+
+        // Filtrando pelo username e convertendo as datas para objetos Date
+        const filtered = payments
+          .filter(payment => payment.username === currentUser.username)
+          .map(payment => ({
+            ...payment,
+            createdAt: new Date(payment.createdAt).toISOString(), // Garantindo o formato de data ISO
+          }));
+        setLinks(filtered);
+        console.log(filtered)
+
+        // Pegando o último link da lista filtrada e configurando com setText
+        if (filtered.length > 0) {
+          const lastLink = filtered[filtered.length - 1].link; // substitua '.link' pelo campo correto do link, caso necessário
+          setText(lastLink);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar pagamentos:', error);
+      }
     };
+
     fetchPayments();
   }, []);
   const questions = [
@@ -114,7 +145,6 @@ const Profile = () => {
     const labels = Object.keys(groupedData);
     const queroFaturarData = labels.map((label) => groupedData[label]["Quero Fácil"]);
     const queroPromoData = labels.map((label) => groupedData[label]["Quero Promo"]);
-
     return { labels, queroFaturarData, queroPromoData };
   };
 
@@ -150,10 +180,14 @@ const Profile = () => {
 
   // Definir as colunas da tabela
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "product", headerName: "Produto", width: 150 },
-    { field: "amount", headerName: "Valor", width: 110 },
-    { field: "status", headerName: "Status", width: 130 },
+    { field: 'valor', headerName: 'Valor', width: 100 },
+    { field: 'maquina', headerName: 'Máquina', width: 150 },
+    {
+      field: 'link', headerName: 'Link', width: 250, renderCell: (params) => (
+        <a href={params.value} target="_blank" rel="noopener noreferrer">{params.value}</a>
+      )
+    },
+    ,
   ];
   const [maquina, setMaquina] = useState(0);
   const [selectedButtonpage, setSelectedButtonpage] = useState(1);
@@ -191,17 +225,31 @@ const Profile = () => {
     'https://pay.kirvano.com/4a610944-326e-43f4-b4d3-31a9e8fdf43e'
   ]
   const link_payments_querofaturar = [
-    'https://pay.kirvano.com/9e8f6e7e-0dea-46d3-98f9-958799e346bf',
-    'https://pay.kirvano.com/1b115842-d2e7-41ab-b2b1-dbb0fdf2c201',
-    'https://pay.kirvano.com/0cb087b4-18c0-40f7-80a6-75b0a9a6d35e',
-    'https://pay.kirvano.com/32863626-c062-4db7-99ec-ac7d0522f5ea',
-    'https://pay.kirvano.com/48786c61-4059-48b9-99f4-158571f300c5',
-    'https://pay.kirvano.com/eb100f8a-760f-4d4e-b2a1-76d2bd930611',
-    'https://pay.kirvano.com/eb100f8a-760f-4d4e-b2a1-76d2bd930611',
-    'https://pay.kirvano.com/7d1c2b1c-c57d-46fd-b130-b32c0eaa51f1',
-    'https://pay.kirvano.com/5c0fcd4e-2490-49b8-8269-afe332d0ffb1',
-    'https://pay.kirvano.com/a496b666-a736-4096-9074-4918b711bde2',
-    'https://pay.kirvano.com/64bbe4ce-b6c2-414c-a25d-3f89350e271e'
+    'https://pay.kirvano.com/1e45e65d-4586-42d2-a5b0-b761f47228e9',
+    'https://pay.kirvano.com/d89b39d3-562b-4ea2-bb19-890ef5491ecf',
+    'https://pay.kirvano.com/97a6a7a1-cc47-4bdd-a5f4-9e6896286809',
+    'https://pay.kirvano.com/bf0360b0-818e-4ff5-b64c-f22ad5aa6cc7',
+    'https://pay.kirvano.com/9ced6928-6600-45da-93cb-ff1c4cd92f26',
+    'https://pay.kirvano.com/6df70caa-56df-4923-ab9e-13bd9a34938f',
+    'https://pay.kirvano.com/4abf80fe-95a4-4cd8-9ed8-cb886d44a539',
+    'https://pay.kirvano.com/2c366824-ce76-465a-838a-15c2a39e065f',
+    'https://pay.kirvano.com/616b967e-f907-4db4-9cb2-84177b0f5bb3',
+    'https://pay.kirvano.com/884788c2-13ea-459d-a07a-21903ba7ce68',
+    'https://pay.kirvano.com/f29d27fb-d1b9-4cec-8397-e2d494af6967'
+  ]
+  const link_payments_queropromo = [
+    'https://pay.kirvano.com/e4f1c93c-e3d7-4710-ba11-86ed14ef9c9e',
+    'https://pay.kirvano.com/d5517028-0061-400f-ad8e-d746ddcb48c2',
+    'https://pay.kirvano.com/a7c1fb4a-6670-4ce1-abb1-26f77b4c647f',
+    'https://pay.kirvano.com/9d4834b0-dd79-42d7-87ae-8d45289b83a7',
+    'https://pay.kirvano.com/376b43db-7b94-4b5f-8aed-1b4819cbe977',
+    'https://pay.kirvano.com/8b08688b-39a2-4a92-bccb-563514944e68',
+    'https://pay.kirvano.com/ec7b7cec-3c52-4131-bd7f-2a5be5e7111a',
+    'https://pay.kirvano.com/22bb7ca4-d4c0-49e8-9aca-83228d98d47d',
+    'https://pay.kirvano.com/abce8275-bbc4-4024-8a01-f9ecf5762f03',
+    'https://pay.kirvano.com/86825353-532c-4206-8886-8c740d89f672',
+    'https://pay.kirvano.com/f9135920-8782-48a1-9e8e-0bfcb45ba0e3',
+
   ]
   const handleSelectChange = (event) => {
     const index = event.target.selectedIndex;
@@ -221,17 +269,82 @@ const Profile = () => {
   };
 
   // Função para copiar o texto para a área de transferência
-  const handleCopyQueroFacil = () => {
+  const handleCopyQueroFacil = async () => {
+    try {
+      const response = await axios.post('https://querotaxa.onrender.com/api/payment/links', {
+        valor: options_querofacil[selectedIndex - 1],
+        maquina: 'Quero Fácil',
+        link: link_payments_querofacil[selectedIndex - 1],
+        username: currentUser.username
+      });
+
+      console.log('Dados enviados com sucesso:', response.data);
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+    }
     navigator.clipboard.writeText(link_payments_querofacil[selectedIndex - 1]);
     alert('Link de pagamento copiado')
+    setText(link_payments_querofacil[selectedIndex - 1])
+    setSelectedButtonpage(2) 
+    setSelectedMaquina(0)
+    setCheckin(0)
+    setLinkPage(0)
   };
   // Função para copiar o texto para a área de transferência
-  const handleCopyQueroFaturar = () => {
+  const handleCopyQueroFaturar = async () => {
+    try {
+      const response = await axios.post('https://querotaxa.onrender.com/api/payment/links', {
+        valor: option_queroFaturar[selectedIndex - 1],
+        maquina: 'Quero Faturar',
+        link: link_payments_querofaturar[selectedIndex - 1],
+        username: currentUser.username
+      });
+
+      console.log('Dados enviados com sucesso:', response.data);
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+    }
     navigator.clipboard.writeText(link_payments_querofaturar[selectedIndex - 1]);
     alert('Link de pagamento copiado')
+    setText(link_payments_querofaturar[selectedIndex - 1])
+    setSelectedButtonpage(2) 
+    setSelectedMaquina(0)
+    setCheckin(0)
+    setLinkPage(0)
   };
+  // Função para copiar o texto para a área de transferência
+  const handleCopyQueroPromo = async () => {
+    try {
+      const response = await axios.post('https://querotaxa.onrender.com/api/payment/links', {
+        valor: option_queroFaturar[selectedIndex - 1],
+        maquina: 'Quero Promo',
+        link: link_payments_queropromo[selectedIndex - 1],
+        username: currentUser.username
+      });
+
+      console.log('Dados enviados com sucesso:', response.data);
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+    }
+    navigator.clipboard.writeText(link_payments_queropromo[selectedIndex - 1]);
+    alert('Link de pagamento copiado')
+    setText(link_payments_queropromo[selectedIndex - 1])
+    setSelectedButtonpage(2) 
+    setSelectedMaquina(0)
+    setCheckin(0)
+    setLinkPage(0)
+  };
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text);
+  }
   return (
     <div className='container-profile' style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+      <h3 className="tag-topo">{currentUser.username}
+        <a href="/login" className="nav-link" onClick={logOut}>
+          Sair
+        </a>
+      </h3>
+
       {selectedMaquina === 1 && checkin == 0 && linkPage == 0 && maquina == 0 && (<div className="tabelas-taxas" >
         <div className="tabelas">
           {imagnes_taxas.map((img) => (
@@ -305,7 +418,7 @@ const Profile = () => {
             <div className="dropdown-container">
               <select className="dropdown" onChange={handleSelectChange} defaultValue="">
                 <option value="" disabled>
-                  Selecione
+                  Selecione o valor
                 </option>
                 {option_queroFaturar.map((option, index) => (
                   <option key={index} value={option}>
@@ -325,13 +438,24 @@ const Profile = () => {
               >
                 Cancelar seleção
               </button>
-              <button
-                className="toggle-page-tabela"
-                onClick={handleCopyQueroFaturar}
-                style={{ backgroundColor: '#09ce78' }}
-              >
-                Gerar Link
-              </button>
+              {selectedButtonTabelaTaxa == 1 && (
+                <button
+                  className="toggle-page-tabela"
+                  onClick={handleCopyQueroFaturar}
+                  style={{ backgroundColor: '#09ce78' }}
+                >
+                  Gerar Link
+                </button>
+              )}
+              {selectedButtonTabelaTaxa == 0 && (
+                <button
+                  className="toggle-page-tabela"
+                  onClick={handleCopyQueroPromo}
+                  style={{ backgroundColor: '#09ce78' }}
+                >
+                  Gerar Link
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -347,7 +471,7 @@ const Profile = () => {
             <div className="dropdown-container">
               <select className="dropdown" onChange={handleSelectChange} defaultValue="">
                 <option value="" disabled>
-                  Selecione
+                  Selecione o valor
                 </option>
                 {options_querofacil.map((option, index) => (
                   <option key={index} value={option}>
@@ -383,62 +507,155 @@ const Profile = () => {
       </div>)}
 
       {/* Div do Pagamento */}
-      {selectedMaquina === 0 && (<div className="column">
-        <div className="pagamento" style={{ flex: 1 }}>
-          {/* Div para os botões de navegação de páginas */}
-          <div className="page">
-            {buttons_page.map((button) => (
-              <button
-                key={button.id}
-                className={`toggle-page ${selectedButtonpage === button.id ? 'active' : ''}`}
-                onClick={() => handleButtonClickpage(button.id)}
-              >
-                {button.label}
-              </button>
-            ))}
-          </div>
-          {/* Botões de opções "quero faturar" e "quero promo" */}
-          <div className="button-group">
-            {buttons_maquinas.map((button) => (
-              <button
-                key={button.id}
-                className={`toggle-button ${maquina === button.id ? 'active' : ''}`}
-                onClick={() => handleButtonClick(button.id)}
-              >
-                <img src={button.image} alt={button.label} />
-              </button>
-            ))}
-            <div className="selecionar-taxa">
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => selecionarMaquina(1)}
-                className="selecionar-taxa"
-              >
-                Selecionar taxa
-              </Button>
-              <h3 >Clique para continuar e gerar link</h3>
+      {selectedMaquina === 0 && (
+        <div className="column">
+          <div className="pagamento" style={{ flex: 1 }}>
+            {/* Div para os botões de navegação de páginas */}
+            <div className="page">
+              {buttons_page.map((button) => (
+                <button
+                  key={button.id}
+                  className={`toggle-page ${selectedButtonpage === button.id ? 'active' : ''}`}
+                  onClick={() => handleButtonClickpage(button.id)}
+                >
+                  {button.label}
+                </button>
+              ))}
             </div>
-            {/* <h2>Clique para continuar e gerar link</h2> */}
-          </div>
+            {selectedButtonpage === 1 ? (
+              <div className="button-group">
+                {buttons_maquinas.map((button) => (
+                  <button
+                    key={button.id}
+                    className={`toggle-button ${maquina === button.id ? 'active' : ''}`}
+                    onClick={() => handleButtonClick(button.id)}
+                  >
+                    <img src={button.image} alt={button.label} />
+                  </button>
+                ))}
+                <div className="selecionar-taxa">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => selecionarMaquina(1)}
+                    className="selecionar-taxa"
+                  >
+                    Selecionar taxa
+                  </Button>
+                  <h3>Clique para continuar e gerar link</h3>
+                </div>
+              </div>
+            ) : (
+              <>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '20px', width: '100%' }}>
+                    <TextField
+                      value={text}
+                      variant="outlined"
+                      disabled
+                      InputProps={{
+                        disableUnderline: true,
+                        style: {
+                          color: '#ffffff',
+                        },
+                      }}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: '#444444',
+                          borderRadius: '8px',
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'transparent',
+                        },
+                        '& .MuiInputBase-input.Mui-disabled': {
+                          WebkitTextFillColor: '#ffffff',
+                          opacity: 1,
+                        },
+                      }}
+                      style={{
+                        width: 'calc(100% - 200px)',
+                        height: '40px',
+                        boxSizing: 'border-box',
+                        marginBottom:'10px',
+                        marginLeft: '10px'
+                      }}
+                    />
+
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => alert('copiar')}
+                      style={{ width: '250px', height: '50px' }}
+                      className="selecionar-taxa"
+                    >
+                      Copiar último link gerado
+                    </Button>
+                  </div>
+
+                <div className="typography-data-container">
+                  <Typography variant="h5" component="h2" style={{ color: "white" }}>
+                    Histórico de Pagamentos
+                  </Typography>
+                  <div style={{ height: 150, width: "95%" }}>
+                    <DataGrid
+                      rows={links}
+                      columns={columns}
+                      pageSize={100}
+                      rowsPerPageOptions={[]}
+                      hideFooter={true}
+                      disableSelectionOnClick
+                      loading={!links.length}
+                      sx={{
+                        '& .MuiDataGrid-columnHeaders': {
+                          backgroundColor: ' #30302f80', // Transforma o cabeçalho em transparente
+                          opacity: 1, // Garante que a cor do texto seja visível
+                        },
+                        '& .MuiDataGrid-columnHeadersInner': {
+                          backgroundColor: 'rgba(0, 0, 0, 0)', // Torna a camada interna do cabeçalho transparente
+                        },
+                        '& .MuiDataGrid-columnHeader': {
+                          backgroundColor: 'rgba(0, 0, 0, 0) !important', // Força a transparência de cada célula do cabeçalho
+                        },
+                        '& .MuiDataGrid-columnSeparator': {
+                          display: 'none', // Remove o separador entre as colunas
+                        },
+                        '& .MuiDataGrid-cell': {
+                          color: '#ffffff', // Define as letras das células como brancas
+                        },
+                        '& .MuiDataGrid-row': {
+                          backgroundColor: 'rgba(48, 48, 48, 0.5)', // Define o fundo das linhas como semitransparente
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                          backgroundColor: 'rgba(48, 48, 48, 0.7)', // Escurece ao passar o mouse
+                        },
+                        '& .MuiDataGrid-columnHeaders:before': {
+                          display: 'none', // Remove quaisquer sombras adicionais ou camadas de fundo
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
 
 
-          {/* Campo para valor da venda */}
-          {/* <TextField
-          required
-          label="Digite o valor da venda"
-          value={valorVenda}
-          onChange={handleChangeValorVenda}
-          inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-          sx={{ width: "75%" }}
-          margin="normal"
-          variant="filled"
-          style={{ backgroundColor: "white", flex: 1, marginLeft: 10 }}
-        /> */}
 
-          {/* Campo de link com botão de copiar */}
-          <div style={{ display: "flex", alignItems: "center", flex: 2 }}>
+
+            {/* Campo para valor da venda */}
             {/* <TextField
+              required
+              label="Digite o valor da venda"
+              value={valorVenda}
+              onChange={handleChangeValorVenda}
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+              sx={{ width: "75%" }}
+              margin="normal"
+              variant="filled"
+              style={{ backgroundColor: "white", flex: 1, marginLeft: 10 }}
+            /> */}
+
+            {/* Campo de link com botão de copiar */}
+            <div style={{ display: "flex", alignItems: "center", flex: 2 }}>
+              {/* <TextField
             value={text}
             variant="outlined"
             disabled
@@ -452,7 +669,7 @@ const Profile = () => {
             }}
           /> */}
 
-            {/* <Tooltip title="Copiar texto">
+              {/* <Tooltip title="Copiar texto">
             <IconButton
               onClick={handleCopy}
               style={{ backgroundColor: "#4a4b4a", color: "#fff" }}
@@ -460,9 +677,9 @@ const Profile = () => {
               <ContentCopyIcon />
             </IconButton>
           </Tooltip> */}
-          </div>
+            </div>
 
-          {/* <Typography
+            {/* <Typography
             variant="h5"
             component="h2"
             style={{
@@ -475,8 +692,8 @@ const Profile = () => {
             Histórico de Pagamentos
           </Typography> */}
 
-          {/* Contêiner para centralizar o DataGrid */}
-          {/* <div
+            {/* Contêiner para centralizar o DataGrid */}
+            {/* <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -497,85 +714,92 @@ const Profile = () => {
         </div>
         </div>
           {/* Div para os botões de navegação de páginas */}
-          <div className="ajuda" >
+            <div className="ajuda" >
 
-            <div className="ajuda-btn">
-              <Button
-                variant="contained"
-                color="success"
-                className='ajuda-btn'
-              >
-                Perguntas frequentes
-              </Button>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => alert('Iremos disponibilizar o mais breve possível')}
-                className="ajuda-btn-2"
-              >
-                Material Afiliado
-              </Button>
-            </div>
-            <div className="page">
-            </div>
-            <div style={{ margin: "20px" }}>
-              {questions.map((q) => (
-                <div key={q.id} style={{ marginBottom: "10px" }}>
-                  <div
-                    onClick={() => toggleQuestion(q.id)}
-                    style={{
-                      cursor: "pointer",
-                      fontWeight: "bold",
-                      backgroundColor: "#f0f0f0",
-                      padding: "10px",
-                      borderRadius: "5px",
-                      color: "black",
-                      textDecorationColor: 'black',
-                    }}
-                  >
-                    {q.question}
-                  </div>
-                  {activeQuestion === q.id && (
+              <div className="ajuda-btn">
+                <Button
+                  variant="contained"
+                  color="success"
+                  className={`toggle-button-tabela`}
+                >
+                  Perguntas frequentes
+                </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => alert('Iremos disponibilizar o mais breve possível')}
+                  className="ajuda-btn"
+                >
+                  Material Afiliado
+                </Button>
+              </div>
+              <div className="page">
+              </div>
+              <div style={{ margin: "20px" }}>
+                {questions.map((q) => (
+                  <div key={q.id} style={{ marginBottom: "10px" }}>
                     <div
+                      onClick={() => toggleQuestion(q.id)}
                       style={{
-                        marginTop: "5px",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                        backgroundColor: "#f0f0f0",
                         padding: "10px",
-                        backgroundColor: "#e0e0e0",
                         borderRadius: "5px",
                         color: "black",
                         textDecorationColor: 'black',
                       }}
                     >
-                      {q.answer}
+                      {q.question}
                     </div>
-                  )}
-                </div>
-              ))}
+                    {activeQuestion === q.id && (
+                      <div
+                        style={{
+                          marginTop: "5px",
+                          padding: "10px",
+                          backgroundColor: "#e0e0e0",
+                          borderRadius: "5px",
+                          color: "black",
+                          textDecorationColor: 'black',
+                        }}
+                      >
+                        {q.answer}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-      </div>)}
+        </div>)
+      }
 
 
       {/* Nova Div contendo os gráficos */}
       <div style={{ flex: 1, marginLeft: 20 }}>
         {/* Gráfico de Pizza */}
-        <div style={{ marginBottom: 50 }}>
-          <Typography variant="h6" style={{ textAlign: "center" }}>
-            Gráfico de Pizza
-          </Typography>
-          <Pie data={pieData} style={{ maxHeight: 300 }} />
-        </div>
+        {pieData > 0 && (
+          <div style={{ marginBottom: 50, marginTop: 20 }}>
+            <Typography variant="h6" style={{ textAlign: "center" }}>
+              Gráfico de Pizza
+            </Typography>
+            <Pie data={pieData} style={{ maxHeight: 300 }} />
+          </div>
+        )}
 
-        <div>
-          <Typography variant="h6" style={{ textAlign: "center" }}>
-            Gráfico de Barras
-          </Typography>
-          <Bar data={barData} style={{ marginLeft: 100, maxHeight: 300 }} />
-        </div>
+        {/* Gráfico de Barras */}
+        {barData > 0 && (
+          <div>
+            <Typography variant="h6" style={{ textAlign: "center" }}>
+              Gráfico de Barras
+            </Typography>
+            <Bar data={barData} style={{ marginLeft: 100, maxHeight: 300 }} />
+          </div>
+        )}
       </div>
-    </div>
+
+    </div >
   );
 };
 

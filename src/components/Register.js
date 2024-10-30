@@ -138,6 +138,9 @@ const Register = () => {
                   onChange={onChangePhone}
                   validations={[required]}
                 />
+                <h5>Cadastre sua conta para recebimento </h5>
+                  <h6>Necessário ser compativel com o nome da conta cadastrada</h6>
+                  
                 <Input
                   type="text"
                   name="pixKey"
@@ -195,8 +198,8 @@ const Register = () => {
                 />
                 <button className="btn-submit">Cadastrar</button>
                 <div className="register-link">
-            <a href="/login">Já possuo conta</a>
-          </div>
+                  <a href="/login">Já possuo conta</a>
+                </div>
               </div>
             </div>
           )}
