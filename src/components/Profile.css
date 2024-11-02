@@ -2,11 +2,11 @@ body {
     background-image: url('./../../public/assets/fundo_profile.png') !important;
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: fixed;
     font-family: Arial, sans-serif;
     color: #fff;
     margin: 0;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,22 +15,17 @@ body {
 
 /* Div para a barra do topo */
 .top-bar {
-    background-image: url('./../../public/assets/barra.png') !important;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 75px;
-    /* Altura da barra */
-    background-color: rgba(0, 0, 0, 0.7);
-    /* Fundo semi-transparente */
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
     color: white;
     z-index: 1000;
-    /* Garante que a barra esteja sobre outros elementos */
 }
 
 /* Estilo para o link e texto */
@@ -53,32 +48,22 @@ body {
     color: #08fe95;
 }
 
-
 .pagamento {
-    margin-top: 110px;
-    margin-left: 30px;
-    background-color: #30302f80;
-    width: 100%;
-    display: 'flex';
-    align-items: 'center';
-    border-radius: 15px;
-    justify-content: 'space-between';
-    gap: 10px;
-    height: 45%;
-
+    margin-top: 100px !important;
+    margin-left: 30px !important;
+    background-color: #30302f80 !important;
+    width: 100% !important;
+    border-radius: 15px !important;
+    gap: 10px !important;
+    height: 50vh !important;
 }
 
-
-
 .ajuda {
-    /* background-color: #414040; */
-    margin-top: 30px;
-    width: 100%;
-    display: 'flex';
-    align-items: 'center';
-    flex-direction: column;
-    background-color: #30302f80;
-    border-radius: 15px;
+    margin-top: 30px !important;
+    width: 100vh !important;
+    flex-direction: column !important;
+    background-color: #30302f80 !important;
+    border-radius: 15px !important;
 }
 
 .ajuda div {
@@ -92,13 +77,10 @@ body {
     justify-content: space-between;
     width: 100%;
     max-width: 800px;
-    /* Largura fixa */
     gap: 10px;
     margin: 0 auto;
-    /* Centraliza na página */
     padding: 20px;
 }
-
 
 .typography-data-container {
     display: flex;
@@ -106,25 +88,17 @@ body {
     align-items: center;
     width: 680px;
     max-width: 800px;
-    /* Mesma largura para centralização */
     margin-top: 5px;
     gap: 10px;
 }
 
-
 .tabelas-taxas {
     display: block;
-
     margin-left: 30px;
     margin-top: 100px;
-    width: '100%';
-    justify-content: 'space-between';
-    align-items: 'center';
-    gap: '10px';
     background-color: #30302f80;
     border-radius: 15px;
     align-items: center;
-    /* Alinha os itens ao centro verticalmente */
 }
 
 .tabelas-taxas h1 {
@@ -168,7 +142,6 @@ body {
 
 .selecionar-taxa div {
     display: block;
-
 }
 
 .selecionar-taxa h3 {
@@ -177,12 +150,10 @@ body {
     display: flex;
     text-align: center;
     margin-left: 30px;
-
 }
 
 button.selecionar-taxa {
     margin-left: 60px;
-    /* Afasta o botão horizontalmente das imagens */
     background-color: #09ce78;
     color: #fff;
     border-radius: 5px;
@@ -213,7 +184,6 @@ button.selecionar-taxa {
 
 .toggle-page {
     width: 60%;
-    /* Cor de fundo quando desativado */
     margin-top: 15px;
     border-radius: 10px;
     color: white;
@@ -228,9 +198,7 @@ button.selecionar-taxa {
 .toggle-button,
 .toggle-page {
     border: none;
-
     background-color: #4d4d4c5d;
-    /* Cor de fundo quando desativado */
     cursor: pointer;
     padding: 10px;
     transition: transform 0.2s ease;
@@ -242,14 +210,12 @@ button.selecionar-taxa {
     transform: scale(1.1);
     border-radius: 10px;
     background-color: #08fe95;
-    /* Cor de fundo quando ativado */
 }
 
 .toggle-page-tabela {
     flex: auto;
     width: 60%;
     background-color: #08fe95;
-    /* Cor de fundo quando desativado */
     margin-top: 15px;
     border-radius: 10px;
     color: white;
@@ -262,13 +228,11 @@ button.selecionar-taxa {
 
 .tabelas {
     display: flex;
-
 }
 
 .dropdown-container {
     position: relative;
     width: 200px;
-    /* ajuste a largura conforme necessário */
     padding-left: 20px;
     margin-top: 30px;
     margin-left: 150px;
@@ -284,24 +248,24 @@ button.selecionar-taxa {
     border-radius: 4px;
     cursor: pointer;
     border: 2px solid white;
-    /* adiciona a borda branca */
 }
 
 .dropdown-container::after {
     content: '▼';
-    /* seta */
     position: absolute;
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
     color: gray;
-    /* cor da seta */
     pointer-events: none;
-    /* evita clique na seta */
 }
 
 .img-dropdown img {
     margin-left: 150px;
+}
+
+.ajuda-btn {
+    padding-top: 20px;
 }
 
 .ajuda-btn button {
@@ -310,13 +274,6 @@ button.selecionar-taxa {
     cursor: pointer;
     padding: 10px;
     margin-top: 15px;
-    transition: transform 0.2s ease;
     margin-left: 20px;
     background-color: #08fe95;
-
-}
-
-.ajuda-btn {
-    padding-top: 20px;
-
 }
