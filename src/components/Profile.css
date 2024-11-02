@@ -1,12 +1,12 @@
 body {
     background-image: url('./../../public/assets/fundo_profile.png') !important;
-    background-size: cover;
+    background-size: 100%;
     background-repeat: no-repeat;
     font-family: Arial, sans-serif;
     color: #fff;
     margin: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
