@@ -2,6 +2,7 @@ body {
     background-image: url('./../../public/assets/fundo_profile.png') !important;
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     font-family: Arial, sans-serif;
     color: #fff;
     margin: 0;
@@ -12,15 +13,16 @@ body {
     justify-content: center;
 }
 
-
 /* Div para a barra do topo */
 .top-bar {
+    background-image: url('./../../public/assets/barra.png') !important;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 75px;
     /* Altura da barra */
+    background-color: rgba(0, 0, 0, 0.7);
     /* Fundo semi-transparente */
     display: flex;
     align-items: center;
