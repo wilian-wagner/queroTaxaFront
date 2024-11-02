@@ -510,7 +510,7 @@ const Profile = () => {
       {/* Div do Pagamento */}
       {selectedMaquina === 0 && (
         <div className="column">
-          <div className="pagamento" style={{ flex: 1 }}>
+          <div className="pagamento">
             {/* Div para os botões de navegação de páginas */}
             <div className="page">
               {buttons_page.map((button) => (

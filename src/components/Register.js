@@ -101,6 +101,8 @@ const Register = () => {
   };
 
   return (
+    <div className="container">
+
     <div className="register-container">
       <div className="form-container">
         <div className="titulo">
@@ -214,6 +216,8 @@ const Register = () => {
         </Form>
       </div>
     </div>
+    </div>
+
   );
 };
 
