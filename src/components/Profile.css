@@ -1,9 +1,4 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-}
+
 
 body {
     background-image: url('./../../public/assets/fundo_profile.png');
