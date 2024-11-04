@@ -3,7 +3,6 @@ body {
     background-size: cover; /* A imagem irá cobrir todo o fundo */
     background-position: center; /* A imagem será centralizada */
     background-repeat: no-repeat; /* Impede que a imagem se repita */
-    background-attachment: fixed; /* Fixa o background durante o scroll */
     font-family: Arial, sans-serif;
     color: #fff;
     margin: 0;
@@ -57,6 +56,7 @@ body {
     width: 100% !important;
     border-radius: 15px !important;
     gap: 10px !important;
+    height: 55vh !important;
 }
 
 .ajuda {
