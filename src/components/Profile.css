@@ -13,12 +13,7 @@ body {
     justify-content: flex-start;
 }
 .container-profile {
-    width: 90%; /* Ajuste conforme necessário */
-    max-width: 1200px; /* Limite de largura para centralizar */
-    margin: 0 auto; /* Centraliza o contêiner */
-    padding-top: 75px; /* Compensa a altura da top-bar */
     display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
