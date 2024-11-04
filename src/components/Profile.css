@@ -1,15 +1,23 @@
-body {
-    background-image: url('./../../public/assets/fundo_profile.png') !important;
-    background-size: cover; /* A imagem irá cobrir todo o fundo */
-    background-repeat: no-repeat; /* Impede que a imagem se repita */
-    font-family: Arial, sans-serif;
-    color: #fff;
+html, body {
+    height: 100%;
     margin: 0;
-    width: 100%;
+}
+
+html {
+    background-image: url('./../../public/assets/fundo_profile.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Isso faz com que o fundo permaneça fixo ao rolar */
+}
+
+body {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    width: 100%;
 }
 
 /* Div para a barra do topo */
