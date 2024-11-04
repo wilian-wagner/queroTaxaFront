@@ -1,7 +1,6 @@
 body {
     background-image: url('./../../public/assets/fundo_profile.png') !important;
     background-size: cover; /* A imagem irá cobrir todo o fundo */
-    background-position: center; /* A imagem será centralizada */
     background-repeat: no-repeat; /* Impede que a imagem se repita */
     font-family: Arial, sans-serif;
     color: #fff;
