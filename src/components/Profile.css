@@ -59,7 +59,7 @@ body {
 }
 
 .ajuda {
-    margin-top: 80px !important;
+    margin-top: 25px !important;
     width: 100vh !important;
     flex-direction: column !important;
     background-color: #30302f80 !important;
