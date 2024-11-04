@@ -13,9 +13,7 @@ body {
     justify-content: flex-start;
 }
 .container-profile {
-    display: flex;
-    flex-direction: column;
-
+    display: flex; margin-right: 50%;
 }
 
 
