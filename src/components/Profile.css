@@ -32,6 +32,7 @@ body {
     background-color: transparent;
     /* Cor de fundo */
     z-index: 1;
+    padding-bottom: 75px;
     /* Apenas para manter a barra acima do conteúdo, se necessário */
 }
 
