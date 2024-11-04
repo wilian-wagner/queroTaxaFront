@@ -55,7 +55,7 @@ body {
 }
 
 .pagamento {
-    margin-top: 100px !important;
+    margin-top: 175px !important;
     margin-left: 30px !important;
     background-color: #30302f80 !important;
     width: 100% !important;
@@ -65,7 +65,7 @@ body {
 }
 
 .ajuda {
-    margin-top: 25px !important;
+    margin-top: 100px !important;
     width: 100vh !important;
     flex-direction: column !important;
     background-color: #30302f80 !important;
