@@ -1,24 +1,18 @@
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
-html {
+body {
     background-image: url('./../../public/assets/fundo_profile.png');
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: fixed; /* Isso faz com que o fundo permaneça fixo ao rolar */
-}
-
-body {
+    background-attachment: fixed; /* Fixa o fundo */
+    font-family: Arial, sans-serif;
+    color: #fff;
+    margin: 0;
+    min-height: 100vh; /* Garante que o body cubra toda a altura da viewport */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-    color: #fff;
-    width: 100%;
+    justify-content: flex-start;
 }
+
 
 /* Div para a barra do topo */
 .top-bar {
