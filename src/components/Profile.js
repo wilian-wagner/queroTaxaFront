@@ -338,311 +338,311 @@ const Profile = () => {
     navigator.clipboard.writeText(text);
   }
   return (
-    <div className='container-profile' style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
       <div class="top-bar">
         <h3 class="tag-topo">
           {currentUser.username}
           <a href="/login" class="nav-link" onclick="logOut()">Sair</a>
         </h3>
       </div>
-
-      {selectedMaquina === 1 && checkin == 0 && linkPage == 0 && maquina == 0 && (<div className="tabelas-taxas" >
-        <div className="tabelas">
-          {imagnes_taxas.map((img) => (
-            <button
-              key={img.id}
-              className={`toggle-button-tabela ${selectedButtonTabelaTaxa === img.id ? 'active' : ''}`}
-              onClick={() => handleButtonClickTabelaTaxa(img.id)}
-            >
-              <img key={img.id} src={img.image} height={600} width={400} alt={img.label} />
-            </button>
-          ))}</div>
-        <h1 style={{ textAlign: "center", marginTop: "30px" }}>
-          <span>É responsabilidade do vendedor selecionar a taxa correta, </span> <span>caso ocorra algum erro, será acarretado em cancelamento da comissão.</span>
-        </h1>
-        <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
-
-          <button
-            className="toggle-page-tabela"
-            onClick={() => selecionarMaquina(0)}
-          >
-            Cancelar seleção
-          </button>
-          <button
-            className="toggle-page-tabela"
-            onClick={() => avancarCheckin(1)}
-            style={{ backgroundColor: '#09ce78' }}
-          >
-            Confirmar seleção
-          </button>
-        </div>
-
-      </div>)}
-      {selectedMaquina === 1 && checkin == 0 && linkPage == 0 && maquina == 1 && (<div className="tabelas-taxas" >
-        <div className="tabelas">
-          {imagnes_taxas_facil.map((img) => (
-            <button
-              key={img.id}
-              className={`toggle-button-tabela ${selectedButtonTabelaTaxa === img.id ? 'active' : ''}`}
-              onClick={() => handleButtonClickTabelaTaxa(img.id)}
-            >
-              <img key={img.id} src={img.image} height={600} width={400} alt={img.label} />
-            </button>
-          ))}</div>
-        <h1 style={{ textAlign: "center", marginTop: "30px" }}>
-          <span>É responsabilidade do vendedor selecionar a taxa correta, </span> <span>caso ocorra algum erro, será acarretado em cancelamento da comissão.</span>
-        </h1>
-        <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
-
-          <button
-            className="toggle-page-tabela"
-            onClick={() => selecionarMaquina(0)}
-          >
-            Cancelar seleção
-          </button>
-          <button
-            className="toggle-page-tabela"
-            onClick={() => avancarCheckin(1)}
-            style={{ backgroundColor: '#09ce78' }}
-          >
-            Confirmar seleção
-          </button>
-        </div>
-
-      </div>)}
-      {checkin === 1 && linkPage == 0 && maquina == 0 && (<div className="tabelas-taxas" >
-        <div className="tabelas" width={'50%'}>
-
-          <img src={imagnes_taxas[selectedButtonTabelaTaxa].image} height={700} width={400} />
-          <div className="img-dropdown">
-            <img src={buttons_maquinas[maquina].image} width={200} height={250} />
-            <div className="dropdown-container">
-              <select className="dropdown" onChange={handleSelectChange} defaultValue="">
-                <option value="" disabled>
-                  Selecione o valor
-                </option>
-                {option_queroFaturar.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <h1 style={{ textAlign: "center", marginTop: "30px" }}>
-              <span>É responsabilidade do vendedor selecionar a taxa correta, </span> <span>caso ocorra algum erro, será acarretado em cancelamento da comissão.</span>
-            </h1>
-            <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
-
+      <div className="container-profile">
+        {selectedMaquina === 1 && checkin == 0 && linkPage == 0 && maquina == 0 && (<div className="tabelas-taxas" >
+          <div className="tabelas">
+            {imagnes_taxas.map((img) => (
               <button
-                className="toggle-page-tabela"
-                onClick={() => avancarCheckin(0)}
+                key={img.id}
+                className={`toggle-button-tabela ${selectedButtonTabelaTaxa === img.id ? 'active' : ''}`}
+                onClick={() => handleButtonClickTabelaTaxa(img.id)}
               >
-                Cancelar seleção
+                <img key={img.id} src={img.image} height={600} width={400} alt={img.label} />
               </button>
-              {selectedButtonTabelaTaxa == 1 && (
+            ))}</div>
+          <h1 style={{ textAlign: "center", marginTop: "30px" }}>
+            <span>É responsabilidade do vendedor selecionar a taxa correta, </span> <span>caso ocorra algum erro, será acarretado em cancelamento da comissão.</span>
+          </h1>
+          <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
+
+            <button
+              className="toggle-page-tabela"
+              onClick={() => selecionarMaquina(0)}
+            >
+              Cancelar seleção
+            </button>
+            <button
+              className="toggle-page-tabela"
+              onClick={() => avancarCheckin(1)}
+              style={{ backgroundColor: '#09ce78' }}
+            >
+              Confirmar seleção
+            </button>
+          </div>
+
+        </div>)}
+        {selectedMaquina === 1 && checkin == 0 && linkPage == 0 && maquina == 1 && (<div className="tabelas-taxas" >
+          <div className="tabelas">
+            {imagnes_taxas_facil.map((img) => (
+              <button
+                key={img.id}
+                className={`toggle-button-tabela ${selectedButtonTabelaTaxa === img.id ? 'active' : ''}`}
+                onClick={() => handleButtonClickTabelaTaxa(img.id)}
+              >
+                <img key={img.id} src={img.image} height={600} width={400} alt={img.label} />
+              </button>
+            ))}</div>
+          <h1 style={{ textAlign: "center", marginTop: "30px" }}>
+            <span>É responsabilidade do vendedor selecionar a taxa correta, </span> <span>caso ocorra algum erro, será acarretado em cancelamento da comissão.</span>
+          </h1>
+          <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
+
+            <button
+              className="toggle-page-tabela"
+              onClick={() => selecionarMaquina(0)}
+            >
+              Cancelar seleção
+            </button>
+            <button
+              className="toggle-page-tabela"
+              onClick={() => avancarCheckin(1)}
+              style={{ backgroundColor: '#09ce78' }}
+            >
+              Confirmar seleção
+            </button>
+          </div>
+
+        </div>)}
+        {checkin === 1 && linkPage == 0 && maquina == 0 && (<div className="tabelas-taxas" >
+          <div className="tabelas" width={'50%'}>
+
+            <img src={imagnes_taxas[selectedButtonTabelaTaxa].image} height={700} width={400} />
+            <div className="img-dropdown">
+              <img src={buttons_maquinas[maquina].image} width={200} height={250} />
+              <div className="dropdown-container">
+                <select className="dropdown" onChange={handleSelectChange} defaultValue="">
+                  <option value="" disabled>
+                    Selecione o valor
+                  </option>
+                  {option_queroFaturar.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <h1 style={{ textAlign: "center", marginTop: "30px" }}>
+                <span>É responsabilidade do vendedor selecionar a taxa correta, </span> <span>caso ocorra algum erro, será acarretado em cancelamento da comissão.</span>
+              </h1>
+              <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
+
                 <button
                   className="toggle-page-tabela"
-                  onClick={handleCopyQueroFaturar}
+                  onClick={() => avancarCheckin(0)}
+                >
+                  Cancelar seleção
+                </button>
+                {selectedButtonTabelaTaxa == 1 && (
+                  <button
+                    className="toggle-page-tabela"
+                    onClick={handleCopyQueroFaturar}
+                    style={{ backgroundColor: '#09ce78' }}
+                  >
+                    Gerar Link
+                  </button>
+                )}
+                {selectedButtonTabelaTaxa == 0 && (
+                  <button
+                    className="toggle-page-tabela"
+                    onClick={handleCopyQueroPromo}
+                    style={{ backgroundColor: '#09ce78' }}
+                  >
+                    Gerar Link
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+
+        </div>)}
+        {checkin === 1 && linkPage == 0 && maquina == 1 && (<div className="tabelas-taxas" >
+          <div className="tabelas" width={'50%'}>
+
+            <img src={imagnes_taxas_facil[selectedButtonTabelaTaxa].image} height={700} width={400} />
+            <div className="img-dropdown">
+              <img src={buttons_maquinas[maquina].image} width={200} height={250} />
+              <div className="dropdown-container">
+                <select className="dropdown" onChange={handleSelectChange} defaultValue="">
+                  <option value="" disabled>
+                    Selecione o valor
+                  </option>
+                  {options_querofacil.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+
+              </div>
+              <h1 style={{ textAlign: "center", marginTop: "30px" }}>
+                <span>É responsabilidade do vendedor selecionar a taxa correta, </span> <span>caso ocorra algum erro, será acarretado em cancelamento da comissão.</span>
+              </h1>
+              <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
+
+                <button
+                  className="toggle-page-tabela"
+                  onClick={() => avancarCheckin(0)}
+                >
+                  Cancelar seleção
+                </button>
+                <button
+                  className="toggle-page-tabela"
+                  onClick={handleCopyQueroFacil}
                   style={{ backgroundColor: '#09ce78' }}
                 >
                   Gerar Link
                 </button>
-              )}
-              {selectedButtonTabelaTaxa == 0 && (
-                <button
-                  className="toggle-page-tabela"
-                  onClick={handleCopyQueroPromo}
-                  style={{ backgroundColor: '#09ce78' }}
-                >
-                  Gerar Link
-                </button>
-              )}
+              </div>
             </div>
           </div>
-        </div>
 
 
-      </div>)}
-      {checkin === 1 && linkPage == 0 && maquina == 1 && (<div className="tabelas-taxas" >
-        <div className="tabelas" width={'50%'}>
+        </div>)}
 
-          <img src={imagnes_taxas_facil[selectedButtonTabelaTaxa].image} height={700} width={400} />
-          <div className="img-dropdown">
-            <img src={buttons_maquinas[maquina].image} width={200} height={250} />
-            <div className="dropdown-container">
-              <select className="dropdown" onChange={handleSelectChange} defaultValue="">
-                <option value="" disabled>
-                  Selecione o valor
-                </option>
-                {options_querofacil.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-
-            </div>
-            <h1 style={{ textAlign: "center", marginTop: "30px" }}>
-              <span>É responsabilidade do vendedor selecionar a taxa correta, </span> <span>caso ocorra algum erro, será acarretado em cancelamento da comissão.</span>
-            </h1>
-            <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
-
-              <button
-                className="toggle-page-tabela"
-                onClick={() => avancarCheckin(0)}
-              >
-                Cancelar seleção
-              </button>
-              <button
-                className="toggle-page-tabela"
-                onClick={handleCopyQueroFacil}
-                style={{ backgroundColor: '#09ce78' }}
-              >
-                Gerar Link
-              </button>
-            </div>
-          </div>
-        </div>
-
-
-      </div>)}
-
-      {/* Div do Pagamento */}
-      {selectedMaquina === 0 && (
-        <div className="column">
-          <div className="pagamento" style={{ flex: 1 }}>
-            {/* Div para os botões de navegação de páginas */}
-            <div className="page">
-              {buttons_page.map((button) => (
-                <button
-                  key={button.id}
-                  className={`toggle-page ${selectedButtonpage === button.id ? 'active' : ''}`}
-                  onClick={() => handleButtonClickpage(button.id)}
-                >
-                  {button.label}
-                </button>
-              ))}
-            </div>
-            {selectedButtonpage === 1 ? (
-              <div className="button-group">
-                {buttons_maquinas.map((button) => (
+        {/* Div do Pagamento */}
+        {selectedMaquina === 0 && (
+          <div className="column">
+            <div className="pagamento" style={{ flex: 1 }}>
+              {/* Div para os botões de navegação de páginas */}
+              <div className="page">
+                {buttons_page.map((button) => (
                   <button
                     key={button.id}
-                    className={`toggle-button ${maquina === button.id ? 'active' : ''}`}
-                    onClick={() => handleButtonClick(button.id)}
+                    className={`toggle-page ${selectedButtonpage === button.id ? 'active' : ''}`}
+                    onClick={() => handleButtonClickpage(button.id)}
                   >
-                    <img src={button.image} alt={button.label} />
+                    {button.label}
                   </button>
                 ))}
-                <div className="selecionar-taxa">
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => selecionarMaquina(1)}
-                    className="selecionar-taxa"
-                  >
-                    Selecionar taxa
-                  </Button>
-                  <h3>Clique para continuar e gerar link</h3>
-                </div>
               </div>
-            ) : (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '20px', width: '100%' }}>
-                  <TextField
-                    value={text}
-                    variant="outlined"
-                    disabled
-                    InputProps={{
-                      disableUnderline: true,
-                      style: {
-                        color: '#ffffff',
-                      },
-                    }}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        backgroundColor: '#444444',
-                        borderRadius: '8px',
-                      },
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'transparent',
-                      },
-                      '& .MuiInputBase-input.Mui-disabled': {
-                        WebkitTextFillColor: '#ffffff',
-                        opacity: 1,
-                      },
-                    }}
-                    style={{
-                      width: 'calc(100% - 200px)',
-                      height: '40px',
-                      boxSizing: 'border-box',
-                      marginBottom: '10px',
-                      marginLeft: '10px'
-                    }}
-                  />
-
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => alert('copiar')}
-                    style={{ width: '250px', height: '50px' }}
-                    className="selecionar-taxa"
-                  >
-                    Copiar último link gerado
-                  </Button>
-                </div>
-
-                <div className="typography-data-container">
-                  <Typography variant="h5" component="h2" style={{ color: "white" }}>
-                    Histórico de Pagamentos
-                  </Typography>
-                  <div style={{ height: 150, width: "95%" }}>
-                    <DataGrid
-                      rows={links}
-                      columns={columns}
-                      pageSize={100}
-                      rowsPerPageOptions={[]}
-                      hideFooter={true}
-                      disableSelectionOnClick
-                      loading={!links.length}
-                      sx={{
-                        '& .MuiDataGrid-columnHeaders': {
-                          backgroundColor: ' #30302f80', // Transforma o cabeçalho em transparente
-                          opacity: 1, // Garante que a cor do texto seja visível
-                        },
-                        '& .MuiDataGrid-columnHeadersInner': {
-                          backgroundColor: 'rgba(0, 0, 0, 0)', // Torna a camada interna do cabeçalho transparente
-                        },
-                        '& .MuiDataGrid-columnHeader': {
-                          backgroundColor: 'rgba(0, 0, 0, 0) !important', // Força a transparência de cada célula do cabeçalho
-                        },
-                        '& .MuiDataGrid-columnSeparator': {
-                          display: 'none', // Remove o separador entre as colunas
-                        },
-                        '& .MuiDataGrid-cell': {
-                          color: '#ffffff', // Define as letras das células como brancas
-                        },
-                        '& .MuiDataGrid-row': {
-                          backgroundColor: 'rgba(48, 48, 48, 0.5)', // Define o fundo das linhas como semitransparente
-                        },
-                        '& .MuiDataGrid-row:hover': {
-                          backgroundColor: 'rgba(48, 48, 48, 0.7)', // Escurece ao passar o mouse
-                        },
-                        '& .MuiDataGrid-columnHeaders:before': {
-                          display: 'none', // Remove quaisquer sombras adicionais ou camadas de fundo
-                        },
-                      }}
-                    />
+              {selectedButtonpage === 1 ? (
+                <div className="button-group">
+                  {buttons_maquinas.map((button) => (
+                    <button
+                      key={button.id}
+                      className={`toggle-button ${maquina === button.id ? 'active' : ''}`}
+                      onClick={() => handleButtonClick(button.id)}
+                    >
+                      <img src={button.image} alt={button.label} />
+                    </button>
+                  ))}
+                  <div className="selecionar-taxa">
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => selecionarMaquina(1)}
+                      className="selecionar-taxa"
+                    >
+                      Selecionar taxa
+                    </Button>
+                    <h3>Clique para continuar e gerar link</h3>
                   </div>
                 </div>
-              </>
-            )}
+              ) : (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '20px', width: '100%' }}>
+                    <TextField
+                      value={text}
+                      variant="outlined"
+                      disabled
+                      InputProps={{
+                        disableUnderline: true,
+                        style: {
+                          color: '#ffffff',
+                        },
+                      }}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: '#444444',
+                          borderRadius: '8px',
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'transparent',
+                        },
+                        '& .MuiInputBase-input.Mui-disabled': {
+                          WebkitTextFillColor: '#ffffff',
+                          opacity: 1,
+                        },
+                      }}
+                      style={{
+                        width: 'calc(100% - 200px)',
+                        height: '40px',
+                        boxSizing: 'border-box',
+                        marginBottom: '10px',
+                        marginLeft: '10px'
+                      }}
+                    />
+
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => alert('copiar')}
+                      style={{ width: '250px', height: '50px' }}
+                      className="selecionar-taxa"
+                    >
+                      Copiar último link gerado
+                    </Button>
+                  </div>
+
+                  <div className="typography-data-container">
+                    <Typography variant="h5" component="h2" style={{ color: "white" }}>
+                      Histórico de Pagamentos
+                    </Typography>
+                    <div style={{ height: 150, width: "95%" }}>
+                      <DataGrid
+                        rows={links}
+                        columns={columns}
+                        pageSize={100}
+                        rowsPerPageOptions={[]}
+                        hideFooter={true}
+                        disableSelectionOnClick
+                        loading={!links.length}
+                        sx={{
+                          '& .MuiDataGrid-columnHeaders': {
+                            backgroundColor: ' #30302f80', // Transforma o cabeçalho em transparente
+                            opacity: 1, // Garante que a cor do texto seja visível
+                          },
+                          '& .MuiDataGrid-columnHeadersInner': {
+                            backgroundColor: 'rgba(0, 0, 0, 0)', // Torna a camada interna do cabeçalho transparente
+                          },
+                          '& .MuiDataGrid-columnHeader': {
+                            backgroundColor: 'rgba(0, 0, 0, 0) !important', // Força a transparência de cada célula do cabeçalho
+                          },
+                          '& .MuiDataGrid-columnSeparator': {
+                            display: 'none', // Remove o separador entre as colunas
+                          },
+                          '& .MuiDataGrid-cell': {
+                            color: '#ffffff', // Define as letras das células como brancas
+                          },
+                          '& .MuiDataGrid-row': {
+                            backgroundColor: 'rgba(48, 48, 48, 0.5)', // Define o fundo das linhas como semitransparente
+                          },
+                          '& .MuiDataGrid-row:hover': {
+                            backgroundColor: 'rgba(48, 48, 48, 0.7)', // Escurece ao passar o mouse
+                          },
+                          '& .MuiDataGrid-columnHeaders:before': {
+                            display: 'none', // Remove quaisquer sombras adicionais ou camadas de fundo
+                          },
+                        }}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
 
 
 
 
-            {/* Campo para valor da venda */}
-            {/* <TextField
+              {/* Campo para valor da venda */}
+              {/* <TextField
               required
               label="Digite o valor da venda"
               value={valorVenda}
@@ -654,9 +654,9 @@ const Profile = () => {
               style={{ backgroundColor: "white", flex: 1, marginLeft: 10 }}
             /> */}
 
-            {/* Campo de link com botão de copiar */}
-            <div style={{ display: "flex", alignItems: "center", flex: 2 }}>
-              {/* <TextField
+              {/* Campo de link com botão de copiar */}
+              <div style={{ display: "flex", alignItems: "center", flex: 2 }}>
+                {/* <TextField
             value={text}
             variant="outlined"
             disabled
@@ -670,7 +670,7 @@ const Profile = () => {
             }}
           /> */}
 
-              {/* <Tooltip title="Copiar texto">
+                {/* <Tooltip title="Copiar texto">
             <IconButton
               onClick={handleCopy}
               style={{ backgroundColor: "#4a4b4a", color: "#fff" }}
@@ -678,9 +678,9 @@ const Profile = () => {
               <ContentCopyIcon />
             </IconButton>
           </Tooltip> */}
-            </div>
+              </div>
 
-            {/* <Typography
+              {/* <Typography
             variant="h5"
             component="h2"
             style={{
@@ -693,8 +693,8 @@ const Profile = () => {
             Histórico de Pagamentos
           </Typography> */}
 
-            {/* Contêiner para centralizar o DataGrid */}
-            {/* <div
+              {/* Contêiner para centralizar o DataGrid */}
+              {/* <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -715,93 +715,93 @@ const Profile = () => {
         </div>
         </div>
           {/* Div para os botões de navegação de páginas */}
-            <div className="ajuda" >
+              <div className="ajuda" >
 
-              <div className="ajuda-btn">
-                <Button
-                  variant="contained"
-                  color="success"
-                  className={`toggle-button-tabela`}
-                >
-                  Perguntas frequentes
-                </Button>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() => alert('Iremos disponibilizar o mais breve possível')}
-                  className="ajuda-btn"
-                >
-                  Material Afiliado
-                </Button>
-              </div>
-              <div className="page">
-              </div>
-              <div style={{ margin: "20px" }}>
-                {questions.map((q) => (
-                  <div key={q.id} style={{ marginBottom: "10px" }}>
-                    <div
-                      onClick={() => toggleQuestion(q.id)}
-                      style={{
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                        backgroundColor: "#f0f0f0",
-                        padding: "10px",
-                        borderRadius: "5px",
-                        color: "black",
-                        textDecorationColor: 'black',
-                      }}
-                    >
-                      {q.question}
-                    </div>
-                    {activeQuestion === q.id && (
+                <div className="ajuda-btn">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    className={`toggle-button-tabela`}
+                  >
+                    Perguntas frequentes
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => alert('Iremos disponibilizar o mais breve possível')}
+                    className="ajuda-btn"
+                  >
+                    Material Afiliado
+                  </Button>
+                </div>
+                <div className="page">
+                </div>
+                <div style={{ margin: "20px" }}>
+                  {questions.map((q) => (
+                    <div key={q.id} style={{ marginBottom: "10px" }}>
                       <div
+                        onClick={() => toggleQuestion(q.id)}
                         style={{
-                          marginTop: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          backgroundColor: "#f0f0f0",
                           padding: "10px",
-                          backgroundColor: "#e0e0e0",
                           borderRadius: "5px",
                           color: "black",
                           textDecorationColor: 'black',
                         }}
                       >
-                        {q.answer}
+                        {q.question}
                       </div>
-                    )}
-                  </div>
-                ))}
+                      {activeQuestion === q.id && (
+                        <div
+                          style={{
+                            marginTop: "5px",
+                            padding: "10px",
+                            backgroundColor: "#e0e0e0",
+                            borderRadius: "5px",
+                            color: "black",
+                            textDecorationColor: 'black',
+                          }}
+                        >
+                          {q.answer}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-        </div>)
-      }
+          </div>)
+        }
 
 
-      {/* Nova Div contendo os gráficos */}
-      <div style={{ flex: 1, marginLeft: 20 }}>
-        {/* Gráfico de Pizza */}
-        {pieData > 0 && (
-          <div style={{ marginBottom: 50, marginTop: 20 }}>
-            <Typography variant="h6" style={{ textAlign: "center" }}>
-              Gráfico de Pizza
-            </Typography>
-            <Pie data={pieData} style={{ maxHeight: 300 }} />
-          </div>
-        )}
+        {/* Nova Div contendo os gráficos */}
+        <div style={{ flex: 1, marginLeft: 20 }}>
+          {/* Gráfico de Pizza */}
+          {pieData > 0 && (
+            <div style={{ marginBottom: 50, marginTop: 20 }}>
+              <Typography variant="h6" style={{ textAlign: "center" }}>
+                Gráfico de Pizza
+              </Typography>
+              <Pie data={pieData} style={{ maxHeight: 300 }} />
+            </div>
+          )}
 
-        {/* Gráfico de Barras */}
-        {barData > 0 && (
-          <div>
-            <Typography variant="h6" style={{ textAlign: "center" }}>
-              Gráfico de Barras
-            </Typography>
-            <Bar data={barData} style={{ marginLeft: 100, maxHeight: 300 }} />
-          </div>
-        )}
-      </div>
-
-    </div >
-  );
+          {/* Gráfico de Barras */}
+          {barData > 0 && (
+            <div>
+              <Typography variant="h6" style={{ textAlign: "center" }}>
+                Gráfico de Barras
+              </Typography>
+              <Bar data={barData} style={{ marginLeft: 100, maxHeight: 300 }} />
+            </div>
+          )}
+        </div>
+        </div>
+      </div >
+      );
 };
 
-export default Profile;
+      export default Profile;
