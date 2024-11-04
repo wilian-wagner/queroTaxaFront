@@ -17,6 +17,7 @@ body {
 }
 
 /* Div para a barra do topo */
+/* Div para a barra do topo */
 .top-bar {
     position: fixed;
     top: 0;
@@ -30,7 +31,9 @@ body {
     color: white;
     z-index: 1000;
     background-color: transparent;
+    box-sizing: border-box;
 }
+
 
 /* Estilo para o link e texto */
 .tag-topo {
