@@ -14,7 +14,6 @@ body {
 }
 
 .pagamento, .ajuda, .tabelas-taxas, .button-group, .button-group-2, .typography-data-container, .tabelas {
-    overflow-y: auto; /* Permite rolagem interna caso o conteúdo exceda o espaço */
 }
 
 /* Div para a barra do topo */
