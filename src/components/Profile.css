@@ -14,9 +14,7 @@ body {
 }
 
 .pagamento, .ajuda, .tabelas-taxas, .button-group, .button-group-2, .typography-data-container, .tabelas {
-    max-height: 100vh; /* Garante que o conteúdo não ultrapasse a altura da viewport */
     overflow-y: auto; /* Permite rolagem interna caso o conteúdo exceda o espaço */
-    box-sizing: border-box;
 }
 
 /* Div para a barra do topo */
