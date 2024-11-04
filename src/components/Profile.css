@@ -17,8 +17,8 @@ body {
 }
 
 /* Div para a barra do topo */
-/* Div para a barra do topo */
 .top-bar {
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -55,7 +55,7 @@ body {
 }
 
 .pagamento {
-    margin-top: 175px !important;
+    margin-top: 100px !important;
     margin-left: 30px !important;
     background-color: #30302f80 !important;
     width: 100% !important;
@@ -65,7 +65,7 @@ body {
 }
 
 .ajuda {
-    margin-top: 100px !important;
+    margin-top: 25px !important;
     width: 100vh !important;
     flex-direction: column !important;
     background-color: #30302f80 !important;
