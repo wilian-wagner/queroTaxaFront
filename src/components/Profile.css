@@ -65,12 +65,12 @@ body {
     width: 100% !important;
     border-radius: 15px !important;
     gap: 10px !important;
-    height: 55vh !important;
+    height: 50vh !important;
 }
 
 .ajuda {
     margin-top: 50px !important;
-    width: 100vh !important;
+    width: 100% !important;
     flex-direction: column !important;
     background-color: #30302f80 !important;
     border-radius: 15px !important;
