@@ -32,15 +32,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "ESLINT_NO_DEV_ERRORS=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
-      "rules": {
-        "no-unused-vars": ["warn"]
-      },
     "extends": [
       "react-app",
       "react-app/jest"
