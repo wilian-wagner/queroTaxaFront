@@ -19,7 +19,6 @@ body {
 /* Div para a barra do topo */
 /* Div para a barra do topo */
 .top-bar {
-    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
