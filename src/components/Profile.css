@@ -17,10 +17,9 @@ body {
 }
 
 /* Div para a barra do topo */
+/* Div para a barra do topo */
+/* Div para a barra do topo */
 .top-bar {
-    position: sticky;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 75px;
     display: flex;
@@ -28,8 +27,10 @@ body {
     justify-content: space-between;
     padding: 0 20px;
     color: white;
+    background-color: #30302f; /* Cor de fundo */
     z-index: 1000;
 }
+
 
 /* Estilo para o link e texto */
 .tag-topo {
