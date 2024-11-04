@@ -20,12 +20,14 @@ body {
 .top-bar {
     width: 100%;
     height: 75px;
+    top: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
     color: white;
-    background-color: #30302f; /* Cor de fundo */
+    background-color: transparent; /* Cor de fundo */
     z-index: 1; /* Apenas para manter a barra acima do conteúdo, se necessário */
 }
 
@@ -60,7 +62,7 @@ body {
 }
 
 .ajuda {
-    margin-top: 25px !important;
+    margin-top: 50px !important;
     width: 100vh !important;
     flex-direction: column !important;
     background-color: #30302f80 !important;
