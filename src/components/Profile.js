@@ -12,6 +12,7 @@ import EventBus from "../common/EventBus";
 import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement } from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Importando o plugin
 import dayjs from 'dayjs';
+import IconHandMoney from '../assets/maozinha.png'; // Substitua com o caminho correto para o ícone de mão
 
 
 // import maquina from '../../assets/stripe-front/assets/maquininha150x200.png'
@@ -36,6 +37,8 @@ const Profile = () => {
   const [productFilter, setProductFilter] = useState("all"); // Filtro de produto
   const [displayMode, setDisplayMode] = useState("valor"); // Estado para controlar a exibição
   const [filteredPayments, setFilteredPayments] = useState([]);
+  const [totalValue, setTotalValue] = useState(0);
+
 
   const handleDateFilterChange = (event) => {
     setDateFilter(event.target.value);
@@ -43,6 +46,13 @@ const Profile = () => {
 
   const handleProductFilterChange = (event) => {
     setProductFilter(event.target.value);
+  };
+  const calculateTotalValue = (data) => {
+    const total = data.reduce((sum, payment) => {
+      const value = parseFloat(payment.total_price.replace(/[^0-9,.]/g, "").replace(",", "."));
+      return sum + (isNaN(value) ? 0 : value);
+    }, 0);
+    setTotalValue(total.toFixed(2).replace(".", ","));
   };
 
 
@@ -70,17 +80,55 @@ const Profile = () => {
   const handleDisplayModeChange = (mode) => {
     setDisplayMode(mode);
   };
+  const applyDateFilter = (data) => {
+    const now = dayjs();
+    if (dateFilter === "last30Days") {
+      return data.filter(payment => dayjs(payment.created_at).isAfter(now.subtract(30, "days")));
+    } else if (dateFilter === "last7Days") {
+      return data.filter(payment => dayjs(payment.created_at).isAfter(now.subtract(7, "days")));
+    } else if (dateFilter === "lastDay") {
+      return data.filter(payment => dayjs(payment.created_at).isAfter(now.subtract(1, "day")));
+    }
+    return data; // Retorna todos os dados se o filtro for "all"
+  };
 
   const getPieData = () => {
+    // Aplica o filtro de data para o cálculo do gráfico
+    const filteredPayments = applyDateFilter(payments);
+  
     if (displayMode === "valor") {
-      return pieData; // Usa os dados de valor padrão
+      // Calcular dados de valor (percentual) com o filtro de data
+      const frequencyData = filteredPayments.reduce((acc, payment) => {
+        const price = payment.total_price;
+        acc[price] = (acc[price] || 0) + 1;
+        return acc;
+      }, {});
+  
+      const sortedPrices = Object.entries(frequencyData)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4);
+  
+      const totalPayments = filteredPayments.length;
+      const pieLabels = sortedPrices.map(([price]) => price);
+      const pieDataValues = sortedPrices.map(([_, count]) => ((count / totalPayments) * 100).toFixed(2));
+  
+      return {
+        labels: pieLabels,
+        datasets: [
+          {
+            data: pieDataValues,
+            backgroundColor: ["#43a047", "#00b767", "#006336", "#084823"]
+          }
+        ]
+      };
     } else {
-      const quantityData = payments.reduce((acc, payment) => {
+      // Agrupamento para o modo "Quantidade"
+      const quantityData = filteredPayments.reduce((acc, payment) => {
         const product = payment.products;
         acc[product] = (acc[product] || 0) + 1;
         return acc;
       }, {});
-
+  
       return {
         labels: Object.keys(quantityData),
         datasets: [
@@ -310,9 +358,50 @@ const Profile = () => {
     };
 
     fetchPayments();
+   // Aplica o filtro de data para o cálculo total
+   const filteredPayments = applyDateFilter(payments);
+   calculateTotalValue(filteredPayments);
+  }, [currentUser.email,dateFilter]);
+
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const response = await axios.get('https://querotaxa.onrender.com/api/payment/links');
+        const responsePayment = await axios.get("https://querotaxa.onrender.com/api/payment");
+        const filteredPayments = responsePayment.data.filter(payment => payment.customer_email === currentUser.email);
+        const links = response.data;
+  
+        const filtered = links
+          .filter(payment => payment.username === currentUser.username)
+          .map(payment => ({
+            ...payment,
+            createdAt: new Date(payment.createdAt).toISOString(),
+          }));
+        setLinks(filtered);
+  
+        if (filtered.length > 0) {
+          const lastLink = filtered[filtered.length - 1].link;
+          setText(lastLink);
+        }
+  
+        setPayments(filteredPayments);
+  
+        // Calcular valor líquido inicialmente com os dados carregados
+        const filteredData = applyDateFilter(filteredPayments);
+        calculateTotalValue(filteredData); // Chamada para calcular o valor líquido
+  
+        // Resto da configuração dos gráficos
+        updateCharts(filteredData);
+  
+      } catch (error) {
+        console.error('Erro ao buscar pagamentos:', error);
+      }
+    };
+  
+    fetchPayments();
   }, [currentUser.email]);
-
-
+  
+  
 
 
   const questions = [
@@ -934,28 +1023,28 @@ const Profile = () => {
         borderRadius: '15px',
         marginTop: '100px',
       }}>
-       <div  style={{ display: "flex", flexDirection: "column", paddingLeft:30, paddingRight:30}}>
-      
-      {/* Botões Toggle para alternar entre Valor e Quantidade, no topo */}
-      <div style={{
-        display: "flex",
-        gap: "10px",
-        justifyContent: "center", // Centraliza horizontalmente
-        marginBottom: "20px"
-      }}>
-        <button
-          className={`toggle-page ${displayMode === "valor" ? "active" : ""}`}
-          onClick={() => handleDisplayModeChange("valor")}
-        >
-          Valor
-        </button>
-        <button
-          className={`toggle-page ${displayMode === "quantidade" ? "active" : ""}`}
-          onClick={() => handleDisplayModeChange("quantidade")}
-        >
-          Quantidade
-        </button>
-      </div>
+        <div style={{ display: "flex", flexDirection: "column", paddingLeft: 30, paddingRight: 30 }}>
+
+          {/* Botões Toggle para alternar entre Valor e Quantidade, no topo */}
+          <div style={{
+            display: "flex",
+            gap: "10px",
+            justifyContent: "center", // Centraliza horizontalmente
+            marginBottom: "20px"
+          }}>
+            <button
+              className={`toggle-page ${displayMode === "valor" ? "active" : ""}`}
+              onClick={() => handleDisplayModeChange("valor")}
+            >
+              Valor
+            </button>
+            <button
+              className={`toggle-page ${displayMode === "quantidade" ? "active" : ""}`}
+              onClick={() => handleDisplayModeChange("quantidade")}
+            >
+              Quantidade
+            </button>
+          </div>
 
 
           <div style={{
@@ -1018,9 +1107,26 @@ const Profile = () => {
                   ))}
                 </Select>
               </FormControl>
+
+              {/* Caixa de Valor Líquido */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: '#3c3c3c',
+                padding: '15px 20px',
+                borderRadius: '10px',
+                color: '#fff',
+                marginTop: '20px'
+              }}>
+                <img src={IconHandMoney} alt="Ícone de valor líquido" style={{ width: '40px', marginRight: '10px' }} />
+                <div>
+                  <Typography variant="subtitle1" style={{ fontWeight: 'bold' }}>Valor líquido:</Typography>
+                  <Typography variant="h6" style={{ fontWeight: 'bold' }}>{totalValue}</Typography>
+                </div>
+              </div>
             </div>
-          </div> 
-           </div>
+          </div>
+        </div>
 
 
 
