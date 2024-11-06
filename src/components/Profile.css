@@ -55,7 +55,7 @@ body {
 }
 
 .nav-link:hover {
-    color: #08fe95;
+    color: #09ce78;
 }
 
 .pagamento {
@@ -172,13 +172,13 @@ button.selecionar-taxa {
 .toggle-button.active {
     transform: scale(1.1);
     border-radius: 10px;
-    background-color: #08fe95;
+    background-color: #09ce78;
 }
 
 .toggle-button-tabela.active {
     transform: scale(1.1);
     border-radius: 10px;
-    background-color: #08fe95;
+    background-color: #09ce78;
 }
 
 .page {
@@ -218,7 +218,7 @@ button.selecionar-taxa {
 .toggle-page.active {
     transform: scale(1.1);
     border-radius: 10px;
-    background-color: #08fe95;
+    background-color: #09ce78;
 }
 
 .toggle-page-tabela {
@@ -284,5 +284,5 @@ button.selecionar-taxa {
     padding: 10px;
     margin-top: 15px;
     margin-left: 20px;
-    background-color: #08fe95;
+    background-color: #09ce78;
 }

@@ -929,32 +929,34 @@ const Profile = () => {
 
       {/* Nova Div contendo os gráficos */}
       <div style={{
-        flex: 1,
         marginLeft: 60,
         backgroundColor: '#30302f80',
         borderRadius: '15px',
         marginTop: '100px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '20px'
       }}>
-        <div className="container-profile" style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: '20px' }}>
-          {/* Botões Toggle para alternar entre Valor e Quantidade */}
-          <div style={{ display: "flex",marginBottom: "20px" }}>
-            <button
-              className={`toggle-page ${displayMode === "valor" ? "active" : ""}`}
-              onClick={() => handleDisplayModeChange("valor")}
-            >
-                  Valor
-            </button>
-            <button
-              className={`toggle-page ${displayMode === "quantidade" ? "active" : ""}`}
-              onClick={() => handleDisplayModeChange("quantidade")}
-            >
-              Quantidade
-            </button>
-          </div>
+       <div  style={{ display: "flex", flexDirection: "column", paddingLeft:30, paddingRight:30}}>
+      
+      {/* Botões Toggle para alternar entre Valor e Quantidade, no topo */}
+      <div style={{
+        display: "flex",
+        gap: "10px",
+        justifyContent: "center", // Centraliza horizontalmente
+        marginBottom: "20px"
+      }}>
+        <button
+          className={`toggle-page ${displayMode === "valor" ? "active" : ""}`}
+          onClick={() => handleDisplayModeChange("valor")}
+        >
+          Valor
+        </button>
+        <button
+          className={`toggle-page ${displayMode === "quantidade" ? "active" : ""}`}
+          onClick={() => handleDisplayModeChange("quantidade")}
+        >
+          Quantidade
+        </button>
+      </div>
+
 
           <div style={{
             width: '100%',
@@ -988,7 +990,7 @@ const Profile = () => {
                     backgroundColor: '#444444',
                     '& .MuiSelect-icon': { color: '#ffffff' },
                     '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
-                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#08fe95' }
+                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#09ce78' }
                   }}
                 >
                   <MenuItem value="all">Todo o Tempo</MenuItem>
@@ -1007,7 +1009,7 @@ const Profile = () => {
                     backgroundColor: '#444444',
                     '& .MuiSelect-icon': { color: '#ffffff' },
                     '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
-                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#08fe95' }
+                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#09ce78' }
                   }}
                 >
                   <MenuItem value="all">Todos os Produtos</MenuItem>
