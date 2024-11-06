@@ -252,11 +252,12 @@ const Profile = () => {
         const links = response.data;
 
         const filtered = links
-          .filter(payment => payment.username === currentUser.username)
+          .filter(payment => payment.username === currentUser.email)
           .map(payment => ({
             ...payment,
             createdAt: new Date(payment.createdAt).toISOString(),
           }));
+          console.log( currentUser.username)
         setLinks(filtered);
 
         if (filtered.length > 0) {
