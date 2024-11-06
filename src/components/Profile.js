@@ -93,42 +93,18 @@ const Profile = () => {
   };
 
   const getPieData = () => {
-    // Aplica o filtro de data para o cálculo do gráfico
-    const filteredPayments = applyDateFilter(payments);
-  
+    const data = filteredPayments;
+
     if (displayMode === "valor") {
-      // Calcular dados de valor (percentual) com o filtro de data
-      const frequencyData = filteredPayments.reduce((acc, payment) => {
-        const price = payment.total_price;
-        acc[price] = (acc[price] || 0) + 1;
-        return acc;
-      }, {});
-  
-      const sortedPrices = Object.entries(frequencyData)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 4);
-  
-      const totalPayments = filteredPayments.length;
-      const pieLabels = sortedPrices.map(([price]) => price);
-      const pieDataValues = sortedPrices.map(([_, count]) => ((count / totalPayments) * 100).toFixed(2));
-  
-      return {
-        labels: pieLabels,
-        datasets: [
-          {
-            data: pieDataValues,
-            backgroundColor: ["#43a047", "#00b767", "#006336", "#084823"]
-          }
-        ]
-      };
+      return pieData; // Usa os dados de valor padrão
     } else {
       // Agrupamento para o modo "Quantidade"
-      const quantityData = filteredPayments.reduce((acc, payment) => {
+      const quantityData = data.reduce((acc, payment) => {
         const product = payment.products;
         acc[product] = (acc[product] || 0) + 1;
         return acc;
       }, {});
-  
+
       return {
         labels: Object.keys(quantityData),
         datasets: [
@@ -171,6 +147,7 @@ const Profile = () => {
   }, [dateFilter, productFilter, payments]);
 
   const updateCharts = (data) => {
+    // Agora, `data` é `filteredPayments`, já filtrado por data e produto.
     const groupedData = data.reduce((acc, payment) => {
       const product = payment.products;
       const totalPriceString = payment.total_price.replace(/[^0-9,.]/g, "").replace(",", ".");
@@ -184,6 +161,7 @@ const Profile = () => {
 
       return acc;
     }, {});
+
 
     const datasets = Object.keys(groupedData).map((product, index) => {
       return {
@@ -225,6 +203,7 @@ const Profile = () => {
       ]
     });
   };
+
 
   // UseEffect para buscar os dados quando o componente é montado
   useEffect(() => {
@@ -321,10 +300,6 @@ const Profile = () => {
           };
         });
 
-        setLineData({
-          datasets
-        });
-
         // Configuração do gráfico de pizza (conforme já implementado)
         const frequencyData = filteredPayments.reduce((acc, payment) => {
           const price = payment.total_price;
@@ -358,50 +333,28 @@ const Profile = () => {
     };
 
     fetchPayments();
-   // Aplica o filtro de data para o cálculo total
-   const filteredPayments = applyDateFilter(payments);
-   calculateTotalValue(filteredPayments);
-  }, [currentUser.email,dateFilter]);
-
+    // Aplica o filtro de data para o cálculo total
+    const filteredPayments = applyDateFilter(payments);
+    calculateTotalValue(filteredPayments);
+  }, [currentUser.email, dateFilter]);
   useEffect(() => {
-    const fetchPayments = async () => {
-      try {
-        const response = await axios.get('https://querotaxa.onrender.com/api/payment/links');
-        const responsePayment = await axios.get("https://querotaxa.onrender.com/api/payment");
-        const filteredPayments = responsePayment.data.filter(payment => payment.customer_email === currentUser.email);
-        const links = response.data;
-  
-        const filtered = links
-          .filter(payment => payment.username === currentUser.username)
-          .map(payment => ({
-            ...payment,
-            createdAt: new Date(payment.createdAt).toISOString(),
-          }));
-        setLinks(filtered);
-  
-        if (filtered.length > 0) {
-          const lastLink = filtered[filtered.length - 1].link;
-          setText(lastLink);
-        }
-  
-        setPayments(filteredPayments);
-  
-        // Calcular valor líquido inicialmente com os dados carregados
-        const filteredData = applyDateFilter(filteredPayments);
-        calculateTotalValue(filteredData); // Chamada para calcular o valor líquido
-  
-        // Resto da configuração dos gráficos
-        updateCharts(filteredData);
-  
-      } catch (error) {
-        console.error('Erro ao buscar pagamentos:', error);
-      }
-    };
-  
-    fetchPayments();
-  }, [currentUser.email]);
-  
-  
+    // Filtro de data e produto
+    let filteredData = applyDateFilter(payments);
+
+    // Aplicando o filtro de produto após o filtro de data
+    if (productFilter !== "all") {
+      filteredData = filteredData.filter(payment => payment.products === productFilter);
+    }
+
+    // Atualizando o estado com os dados filtrados
+    setFilteredPayments(filteredData);
+
+    // Atualiza os gráficos e o valor líquido com os dados filtrados
+    updateCharts(filteredData);
+    calculateTotalValue(filteredData);
+
+  }, [dateFilter, productFilter, payments]);
+
 
 
   const questions = [
