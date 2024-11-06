@@ -367,7 +367,7 @@ const Profile = () => {
     {
       id: 2,
       question: "Meu cliente está mandando mensagem com dúvidas, o que eu faço?",
-      answer: "Enviei o contato do suporte (XX) XXXX-XXX, não é necessário que você dê nenhum suporte, além do pós venda. É responsabilidade 100% da QueroTaxa.",
+      answer: "Enviei o contato do suporte (48) 8506-7774, não é necessário que você dê nenhum suporte, além do pós venda. É responsabilidade 100% da QueroTaxa.",
     },
     {
       id: 3,
@@ -377,7 +377,7 @@ const Profile = () => {
     {
       id: 4,
       question: "Meu cliente errou dados, o que ele deve fazer?",
-      answer: "Entrar em contato com o suporte técnico (xx) xxxx-xxxx",
+      answer: "Entrar em contato com o suporte técnico (48) 8506-7774",
     },
   ];
 
@@ -921,11 +921,12 @@ const Profile = () => {
                 <Button
                   variant="contained"
                   color="success"
-                  onClick={() => alert('Iremos disponibilizar o mais breve possível')}
+                  onClick={() => window.open('https://drive.google.com/drive/u/4/folders/1KrprAonBPSQ6zuAImVTURx-YmD1afiJh', '_blank')}
                   className="ajuda-btn"
                 >
                   Material Afiliado
                 </Button>
+
               </div>
               <div className="page">
               </div>
