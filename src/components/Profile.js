@@ -32,8 +32,9 @@ const Profile = () => {
   const [linkPage, setLinkPage] = useState(0);
   const [links, setLinks] = useState([])
   const [lineData, setLineData] = useState();
-  const [dateFilter, setDateFilter] = useState("all"); // Filtro de data
+  const [dateFilter, setDateFilter] = useState("lastDay"); // Filtro de data
   const [productFilter, setProductFilter] = useState("all"); // Filtro de produto
+  const [displayMode, setDisplayMode] = useState("valor"); // Estado para controlar a exibição
   const [filteredPayments, setFilteredPayments] = useState([]);
 
   const handleDateFilterChange = (event) => {
@@ -66,7 +67,31 @@ const Profile = () => {
   const avancarCheckin = async (state) => {
     setCheckin(state)
   };
+  const handleDisplayModeChange = (mode) => {
+    setDisplayMode(mode);
+  };
 
+  const getPieData = () => {
+    if (displayMode === "valor") {
+      return pieData; // Usa os dados de valor padrão
+    } else {
+      const quantityData = payments.reduce((acc, payment) => {
+        const product = payment.products;
+        acc[product] = (acc[product] || 0) + 1;
+        return acc;
+      }, {});
+
+      return {
+        labels: Object.keys(quantityData),
+        datasets: [
+          {
+            data: Object.values(quantityData),
+            backgroundColor: ["#43a047", "#00b767", "#006336", "#084823"]
+          }
+        ]
+      };
+    }
+  };
   useEffect(() => {
     // Filtro de data
     let filteredData = payments;
@@ -169,7 +194,11 @@ const Profile = () => {
         color: '#fff', // Cor do texto
         formatter: (value, context) => {
           const label = context.chart.data.labels[context.dataIndex];
-          return `${label}\n${value}%`; // Exibe o valor e a porcentagem
+          if (displayMode === 'valor') {
+            return `${label}\n${value}%`; // Exibe o valor com porcentagem
+          } else {
+            return `${label}\n${value}`; // Exibe apenas a quantidade sem o símbolo de porcentagem
+          }
         },
         anchor: 'center', // Posiciona o rótulo no centro da fatia
         align: 'center', // Centraliza o rótulo na fatia
@@ -185,7 +214,7 @@ const Profile = () => {
     responsive: true,
     maintainAspectRatio: false, // Permite que o gráfico ocupe mais espaço vertical se necessário
   };
-  
+
   // UseEffect para buscar os dados quando o componente é montado
   useEffect(() => {
     const fetchPayments = async () => {
@@ -904,56 +933,98 @@ const Profile = () => {
         marginLeft: 60,
         backgroundColor: '#30302f80',
         borderRadius: '15px',
-        marginTop: '100px'
+        marginTop: '100px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '20px'
       }}>
-  <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-    {/* Dropdown para filtro de data */}
-    <FormControl>
-      <Typography>Filtro de Data</Typography>
-      <Select value={dateFilter} onChange={handleDateFilterChange}>
-        <MenuItem value="all">Todo o Tempo</MenuItem>
-        <MenuItem value="last30Days">Últimos 30 dias</MenuItem>
-        <MenuItem value="last7Days">Últimos 7 dias</MenuItem>
-        <MenuItem value="lastDay">Último dia</MenuItem>
-      </Select>
-    </FormControl>
+        <div className="container-profile" style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: '20px' }}>
+          {/* Botões Toggle para alternar entre Valor e Quantidade */}
+          <div style={{ display: "flex",marginBottom: "20px" }}>
+            <button
+              className={`toggle-page ${displayMode === "valor" ? "active" : ""}`}
+              onClick={() => handleDisplayModeChange("valor")}
+            >
+                  Valor
+            </button>
+            <button
+              className={`toggle-page ${displayMode === "quantidade" ? "active" : ""}`}
+              onClick={() => handleDisplayModeChange("quantidade")}
+            >
+              Quantidade
+            </button>
+          </div>
 
-    {/* Dropdown para filtro de produto */}
-    <FormControl>
-      <Typography>Filtro de Produto</Typography>
-      <Select value={productFilter} onChange={handleProductFilterChange}>
-        <MenuItem value="all">Todos os Produtos</MenuItem>
-        {Array.from(new Set(payments.map(payment => payment.products))).map(product => (
-          <MenuItem key={product} value={product}>{product}</MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  </div>
+          <div style={{
+            width: '100%',
+            borderRadius: '15px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '20px'
+          }}>
+            {/* Gráfico de Pizza - apenas se houver dados */}
+            {pieData?.datasets?.[0]?.data?.length > 0 && (
+              <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+                <div style={{
+                  width: '250x',
+                  height: '250px',
+                  position: 'relative'
+                }}>
+                  <Pie data={getPieData()} options={pieOptions} />
+                </div>
+              </div>
+            )}
 
-  {/* Gráfico de Pizza - apenas se houver dados */}
- {/* Gráfico de Pizza - apenas se houver dados */}
-{pieData?.datasets?.[0]?.data?.length > 0 && (
-  <div style={{
-    marginBottom: 50,
-    marginTop: 20,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  }}>
-    <div style={{
-      width: '300px', // Ajuste a largura conforme necessário
-      height: '300px', // Ajuste a altura conforme necessário
-      position: 'relative'
-    }}>
-      <Pie data={pieData} options={pieOptions} />
-    </div>
-  </div>
-)}
+            {/* Contêiner para os seletores, um embaixo do outro */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginLeft: '20px' }}>
+              <FormControl>
+                <Select
+                  value={dateFilter}
+                  onChange={(e) => setDateFilter(e.target.value)}
+                  sx={{
+                    color: '#ffffff',
+                    backgroundColor: '#444444',
+                    '& .MuiSelect-icon': { color: '#ffffff' },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#08fe95' }
+                  }}
+                >
+                  <MenuItem value="all">Todo o Tempo</MenuItem>
+                  <MenuItem value="last30Days">Últimos 30 dias</MenuItem>
+                  <MenuItem value="last7Days">Últimos 7 dias</MenuItem>
+                  <MenuItem value="lastDay">Último dia</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl>
+                <Select
+                  value={productFilter}
+                  onChange={(e) => setProductFilter(e.target.value)}
+                  sx={{
+                    color: '#ffffff',
+                    backgroundColor: '#444444',
+                    '& .MuiSelect-icon': { color: '#ffffff' },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#08fe95' }
+                  }}
+                >
+                  <MenuItem value="all">Todos os Produtos</MenuItem>
+                  {Array.from(new Set(payments.map(payment => payment.products))).map(product => (
+                    <MenuItem key={product} value={product}>{product}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+          </div> 
+           </div>
 
 
-  {/* Gráfico de Barras - apenas se houver dados */}
-  {/* {lineData?.datasets?.length > 0 && (
+
+
+        {/* Gráfico de Barras - apenas se houver dados */}
+        {/* {lineData?.datasets?.length > 0 && (
     <div>
       <Typography variant="h6" style={{ textAlign: "center" }}>Gráfico de Linha</Typography>
       <Line
@@ -979,7 +1050,7 @@ const Profile = () => {
       />
     </div>
   )} */}
-</div>
+      </div>
 
 
 
