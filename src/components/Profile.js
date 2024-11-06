@@ -31,8 +31,8 @@ const Profile = () => {
   const [option, setOption] = useState("quero faturar");
   const [text, setText] = useState("Ultimo Link Utilizado");
   const [payments, setPayments] = useState([]); // State to hold payment data
-
-
+  const [barData, setBarData] = useState()
+  const [pieData, setPieData] = useState()
   const [selectedImage, setSelectedImage] = useState("");
   const [selectedMaquina, setSelectedMaquina] = useState(0);
   const [checkin, setCheckin] = useState(0);
@@ -77,30 +77,89 @@ const Profile = () => {
     const fetchPayments = async () => {
       try {
         const response = await axios.get('https://querotaxa.onrender.com/api/payment/links');
-        const payments = response.data;
+        const responsePayment = await axios.get("https://querotaxa.onrender.com/api/payment");
+        const filteredPayments = responsePayment.data.filter(payment => payment.customer_email === currentUser.email);
+        const links = response.data;
 
         // Filtrando pelo username e convertendo as datas para objetos Date
-        const filtered = payments
+        const filtered = links
           .filter(payment => payment.username === currentUser.username)
           .map(payment => ({
             ...payment,
             createdAt: new Date(payment.createdAt).toISOString(), // Garantindo o formato de data ISO
           }));
         setLinks(filtered);
-        console.log(filtered)
 
         // Pegando o último link da lista filtrada e configurando com setText
         if (filtered.length > 0) {
           const lastLink = filtered[filtered.length - 1].link; // substitua '.link' pelo campo correto do link, caso necessário
           setText(lastLink);
         }
+
+        // Agrupando por produto e calculando os totais
+        const groupedData = filteredPayments.reduce((acc, payment) => {
+          const product = payment.products;
+          const totalPriceString = payment.total_price.replace("R$", "").replace(/\./g, "").replace(",", ".");
+          const totalPrice = parseFloat(totalPriceString);
+
+          // Verificar se `totalPrice` é um número válido antes de usá-lo
+          if (!isNaN(totalPrice)) {
+            if (!acc[product]) {
+              acc[product] = { count: 0, totalValue: 0 };
+            }
+            acc[product].count += 1;
+            acc[product].totalValue += totalPrice;
+          } else {
+            console.warn(`Preço inválido para o pagamento com ID ${payment.id}:`, payment.total_price);
+          }
+
+          return acc;
+        }, {});
+
+        setPayments(filteredPayments);
+
+        // Verificar se há dados antes de configurar os gráficos
+        const productNames = Object.keys(groupedData);
+        const productCounts = Object.values(groupedData).map(item => item.count);
+        const productTotalValues = Object.values(groupedData).map(item => item.totalValue);
+
+        // Apenas configurar `pieData` e `barData` se houver dados válidos
+        if (productNames.length > 0) {
+          setPieData({
+            labels: productNames,
+            datasets: [
+              {
+                data: productCounts,
+                backgroundColor: ["#43a047", "#e53935", "#ff9800"],
+                hoverBackgroundColor: ["#66bb6a", "#ef5350", "#ffb74d"]
+              }
+            ]
+          });
+
+          setBarData({
+            labels: productNames,
+            datasets: [
+              {
+                label: "Valor Total (R$)",
+                data: productTotalValues,
+                backgroundColor: ["#43a047", "#e53935", "#ff9800"],
+                barPercentage: 0.5, // Ajusta a largura da barra (0 a 1)
+                categoryPercentage: 0.8, // Ajusta o espaçamento entre as barras
+              }
+            ]
+          });
+        }
+        console.log(productTotalValues)
       } catch (error) {
         console.error('Erro ao buscar pagamentos:', error);
       }
     };
 
     fetchPayments();
-  }, []);
+  }, [currentUser.email]);
+
+
+
   const questions = [
     {
       id: 1,
@@ -123,60 +182,7 @@ const Profile = () => {
       answer: "Entrar em contato com o suporte técnico (xx) xxxx-xxxx",
     },
   ];
-  // Agrupar dados por valor e tipo de produto
-  const groupByValueAndProduct = () => {
-    if (!Array.isArray(payments)) return { labels: [], queroFaturarData: [], queroPromoData: [] };
 
-    const groupedData = payments.reduce((acc, payment) => {
-      // Analisando `products` e extraindo `product`
-      const parsedProducts = JSON.parse(payment.products || "[]");
-      const product = parsedProducts.length > 0 ? parsedProducts[0].name : "Outro";
-
-      // Extraindo `amount` do `total_price` (sem símbolo)
-      const amount = parseFloat(payment.total_price.replace("R$ ", "").replace(",", "."));
-
-      if (!acc[amount]) {
-        acc[amount] = { "Quero Fácil": 0, "Quero Promo": 0 };
-      }
-      acc[amount][product] += 1;
-      return acc;
-    }, {});
-
-    const labels = Object.keys(groupedData);
-    const queroFaturarData = labels.map((label) => groupedData[label]["Quero Fácil"]);
-    const queroPromoData = labels.map((label) => groupedData[label]["Quero Promo"]);
-    return { labels, queroFaturarData, queroPromoData };
-  };
-
-  const { labels, queroFaturarData, queroPromoData } = groupByValueAndProduct();
-
-  // Dados para o gráfico de Pizza
-  const pieData = {
-    labels: ["Quero Fácil", "Quero Promo"],
-    datasets: [
-      {
-        data: [queroFaturarData.reduce((a, b) => a + b, 0), queroPromoData.reduce((a, b) => a + b, 0)],
-        backgroundColor: ["#43a047", "#e53935"],
-        hoverBackgroundColor: ["#66bb6a", "#ef5350"],
-      },
-    ],
-  };
-  // Dados para o gráfico de Barras agrupado por valor
-  const barData = {
-    labels: labels,
-    datasets: [
-      {
-        label: "Quero Fácil",
-        data: queroFaturarData,
-        backgroundColor: "#43a047",
-      },
-      {
-        label: "Quero Promo",
-        data: queroPromoData,
-        backgroundColor: "#e53935",
-      },
-    ],
-  };
 
   // Definir as colunas da tabela
   const columns = [
@@ -218,13 +224,17 @@ const Profile = () => {
 
   const options_querofacil = ['19,90', '39,90', '59,90', '79,90', '99,90']; // Array de opções
   const option_queroFaturar = ['197,90', '247,90', '297,90', '347,90', '397,90', '447,90', '497,90', '547,90', '597,90', '647,90', '697,90']
-  const link_payments_querofacil = ['https://pay.kirvano.com/1a80cd56-dc92-435a-96ff-38d206e2d5b5',
+  const link_payments_querofacil = [
+    // 'https://pay.kirvano.com/63d45320-22da-411f-aa55-e37a5e9228b1',
+
+    'https://pay.kirvano.com/1a80cd56-dc92-435a-96ff-38d206e2d5b5',
     'https://pay.kirvano.com/a857c116-effc-413a-923a-f928f604fed4',
     'https://pay.kirvano.com/549ec712-da5f-4feb-b3de-3ece73435d8c',
     'https://pay.kirvano.com/519c5749-b42a-4681-86c0-913355fe7b97',
     'https://pay.kirvano.com/4a610944-326e-43f4-b4d3-31a9e8fdf43e'
   ]
   const link_payments_querofaturar = [
+    // 'https://pay.kirvano.com/63d45320-22da-411f-aa55-e37a5e9228b1',
     'https://pay.kirvano.com/1e45e65d-4586-42d2-a5b0-b761f47228e9',
     'https://pay.kirvano.com/d89b39d3-562b-4ea2-bb19-890ef5491ecf',
     'https://pay.kirvano.com/97a6a7a1-cc47-4bdd-a5f4-9e6896286809',
@@ -268,75 +278,94 @@ const Profile = () => {
     setSelectedButtonpage(id);
   };
 
-  // Função para copiar o texto para a área de transferência
   const handleCopyQueroFacil = async () => {
     try {
+      const baseLink = link_payments_querofacil[selectedIndex - 1];
+      const utmLink = generateUTM(baseLink, currentUser.email, 'social', 'quero_facil_campaign', 'promo');
+
       const response = await axios.post('https://querotaxa.onrender.com/api/payment/links', {
         valor: options_querofacil[selectedIndex - 1],
         maquina: 'Quero Fácil',
-        link: link_payments_querofacil[selectedIndex - 1],
-        username: currentUser.username
+        link: utmLink,
+        username: currentUser.email
       });
 
-      console.log('Dados enviados com sucesso:', response.data);
+      navigator.clipboard.writeText(utmLink);
+      alert('Link de pagamento copiado');
+      setText(utmLink);
+      setSelectedButtonpage(2);
+      setSelectedMaquina(0);
+      setCheckin(0);
+      setLinkPage(0);
     } catch (error) {
       console.error('Erro ao enviar dados:', error);
     }
-    navigator.clipboard.writeText(link_payments_querofacil[selectedIndex - 1]);
-    alert('Link de pagamento copiado')
-    setText(link_payments_querofacil[selectedIndex - 1])
-    setSelectedButtonpage(2)
-    setSelectedMaquina(0)
-    setCheckin(0)
-    setLinkPage(0)
   };
+
   // Função para copiar o texto para a área de transferência
   const handleCopyQueroFaturar = async () => {
     try {
+      const baseLink = link_payments_querofaturar[selectedIndex - 1];
+      const utmLink = generateUTM(baseLink, currentUser.email, 'social', 'quero_faturar_campaign', 'promo');
+
       const response = await axios.post('https://querotaxa.onrender.com/api/payment/links', {
         valor: option_queroFaturar[selectedIndex - 1],
         maquina: 'Quero Faturar',
-        link: link_payments_querofaturar[selectedIndex - 1],
-        username: currentUser.username
+        link: utmLink,
+        username: currentUser.email
       });
 
-      console.log('Dados enviados com sucesso:', response.data);
+      navigator.clipboard.writeText(utmLink);
+      alert('Link de pagamento copiado');
+      setText(utmLink);
+      setSelectedButtonpage(2);
+      setSelectedMaquina(0);
+      setCheckin(0);
+      setLinkPage(0);
     } catch (error) {
       console.error('Erro ao enviar dados:', error);
     }
-    navigator.clipboard.writeText(link_payments_querofaturar[selectedIndex - 1]);
-    alert('Link de pagamento copiado')
-    setText(link_payments_querofaturar[selectedIndex - 1])
-    setSelectedButtonpage(2)
-    setSelectedMaquina(0)
-    setCheckin(0)
-    setLinkPage(0)
   };
+
   // Função para copiar o texto para a área de transferência
   const handleCopyQueroPromo = async () => {
     try {
+      const baseLink = link_payments_queropromo[selectedIndex - 1];
+      const utmLink = generateUTM(baseLink, currentUser.email, 'social', 'quero_promo_campaign', 'promo');
+
       const response = await axios.post('https://querotaxa.onrender.com/api/payment/links', {
         valor: option_queroFaturar[selectedIndex - 1],
         maquina: 'Quero Promo',
-        link: link_payments_queropromo[selectedIndex - 1],
-        username: currentUser.username
+        link: utmLink,
+        username: currentUser.email
       });
 
       console.log('Dados enviados com sucesso:', response.data);
+      navigator.clipboard.writeText(utmLink);
+      alert('Link de pagamento copiado');
+      setText(utmLink);
+      setSelectedButtonpage(2);
+      setSelectedMaquina(0);
+      setCheckin(0);
+      setLinkPage(0);
     } catch (error) {
       console.error('Erro ao enviar dados:', error);
     }
-    navigator.clipboard.writeText(link_payments_queropromo[selectedIndex - 1]);
-    alert('Link de pagamento copiado')
-    setText(link_payments_queropromo[selectedIndex - 1])
-    setSelectedButtonpage(2)
-    setSelectedMaquina(0)
-    setCheckin(0)
-    setLinkPage(0)
   };
+
   const handleCopy = () => {
     navigator.clipboard.writeText(text);
   }
+  const generateUTM = (baseLink, source, medium, campaign, content) => {
+    const params = new URLSearchParams({
+      utm_source: source,
+      utm_medium: medium,
+      utm_campaign: campaign,
+      utm_content: content,
+    });
+    return `${baseLink}?${params.toString()}`;
+  };
+
   return (
     <div className='container-profile' style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
       <div class="top-bar">
@@ -641,43 +670,10 @@ const Profile = () => {
 
 
 
-            {/* Campo para valor da venda */}
-            {/* <TextField
-              required
-              label="Digite o valor da venda"
-              value={valorVenda}
-              onChange={handleChangeValorVenda}
-              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-              sx={{ width: "75%" }}
-              margin="normal"
-              variant="filled"
-              style={{ backgroundColor: "white", flex: 1, marginLeft: 10 }}
-            /> */}
 
             {/* Campo de link com botão de copiar */}
             <div style={{ display: "flex", alignItems: "center", flex: 2 }}>
-              {/* <TextField
-            value={text}
-            variant="outlined"
-            disabled
-            fullWidth
-            style={{
-              backgroundColor: "#f4f4f4",
-              padding: "10px",
-              borderRadius: "5px",
-              marginRight: "10px",
-              marginLeft: 10,
-            }}
-          /> */}
 
-              {/* <Tooltip title="Copiar texto">
-            <IconButton
-              onClick={handleCopy}
-              style={{ backgroundColor: "#4a4b4a", color: "#fff" }}
-            >
-              <ContentCopyIcon />
-            </IconButton>
-          </Tooltip> */}
             </div>
 
             {/* <Typography
@@ -778,27 +774,25 @@ const Profile = () => {
 
 
       {/* Nova Div contendo os gráficos */}
-      <div style={{ flex: 1, marginLeft: 20 }}>
-        {/* Gráfico de Pizza */}
-        {pieData > 0 && (
+      <div style={{
+        flex: 1, marginLeft: 20, backgroundColor: '#30302f80', borderRadius: '15px', height: '40%',marginTop:'80px' }}>
+        {/* Gráfico de Pizza - apenas se houver dados */}
+        {pieData?.datasets?.[0]?.data?.length > 0 && (
           <div style={{ marginBottom: 50, marginTop: 20 }}>
-            <Typography variant="h6" style={{ textAlign: "center" }}>
-              Gráfico de Pizza
-            </Typography>
+            <Typography variant="h6" style={{ textAlign: "center" }}>Gráfico de Pizza</Typography>
             <Pie data={pieData} style={{ maxHeight: 300 }} />
           </div>
         )}
 
-        {/* Gráfico de Barras */}
-        {barData > 0 && (
+        {/* Gráfico de Barras - apenas se houver dados */}
+        {barData?.datasets?.[0]?.data?.length > 0 && (
           <div>
-            <Typography variant="h6" style={{ textAlign: "center" }}>
-              Gráfico de Barras
-            </Typography>
+            <Typography variant="h6" style={{ textAlign: "center" }}>Gráfico de Barras</Typography>
             <Bar data={barData} style={{ marginLeft: 100, maxHeight: 300 }} />
           </div>
         )}
       </div>
+
 
     </div >
   );
