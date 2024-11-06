@@ -257,7 +257,7 @@ const Profile = () => {
             ...payment,
             createdAt: new Date(payment.createdAt).toISOString(),
           }));
-          console.log( currentUser.username)
+        console.log(currentUser.username)
         setLinks(filtered);
 
         if (filtered.length > 0) {
@@ -568,7 +568,7 @@ const Profile = () => {
       <div class="top-bar">
         <h3 class="tag-topo">
           {currentUser.username}
-          <a href="/login" class="nav-link" onclick="logOut()">Sair</a>
+          <a href="/login" class="nav-link" onClick="logOut()">Sair</a>
         </h3>
       </div>
 
@@ -1073,11 +1073,16 @@ const Profile = () => {
                 marginTop: '20px'
               }}>
                 <img src={IconHandMoney} alt="Ícone de valor líquido" style={{ width: '40px', marginRight: '10px' }} />
-                <div>
-                  <Typography variant="subtitle1" style={{ fontWeight: 'bold' }}>Valor líquido:</Typography>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }}>{totalValue}</Typography>
+                <div style={{ whiteSpace: 'nowrap' }}> {/* Garante que o texto não quebre */}
+                  <Typography variant="subtitle1" style={{ fontWeight: 'bold', display: 'inline' }}>
+                    Valor líquido:
+                  </Typography>{' '}
+                  <Typography variant="h6" style={{ fontWeight: 'bold', display: 'inline', marginLeft: '5px' }}>
+                    {totalValue}
+                  </Typography>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
