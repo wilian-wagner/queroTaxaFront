@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, FormControl, Typography } from "@mui/material";
+import { TextField, Button, FormControl, Typography, MenuItem, Select } from "@mui/material";
 import { IconButton, Tooltip } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AuthService from "../services/auth.service";
 import { fetchallPay } from "../services/payment";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
-import { Pie, Bar } from 'react-chartjs-2'; // Importando os gráficos
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip as ChartTooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-} from "chart.js";
+import { Pie, Bar, Line } from 'react-chartjs-2'; // Importando os gráficos
 import "./Profile.css";
 import EventBus from "../common/EventBus";
+import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement } from "chart.js";
+import ChartDataLabels from 'chartjs-plugin-datalabels'; // Importando o plugin
+import dayjs from 'dayjs';
 
-import Alert from "./alert";
+
 // import maquina from '../../assets/stripe-front/assets/maquininha150x200.png'
-
 // Registro de componentes necessários para os gráficos
-ChartJS.register(ArcElement, ChartTooltip, Legend, CategoryScale, LinearScale, BarElement);
+ChartJS.register(ArcElement, ChartTooltip, Legend, ChartDataLabels, CategoryScale, LinearScale, PointElement, LineElement);
 
 const Profile = () => {
   const currentUser = AuthService.getCurrentUser();
@@ -38,6 +31,18 @@ const Profile = () => {
   const [checkin, setCheckin] = useState(0);
   const [linkPage, setLinkPage] = useState(0);
   const [links, setLinks] = useState([])
+  const [lineData, setLineData] = useState();
+  const [dateFilter, setDateFilter] = useState("all"); // Filtro de data
+  const [productFilter, setProductFilter] = useState("all"); // Filtro de produto
+  const [filteredPayments, setFilteredPayments] = useState([]);
+
+  const handleDateFilterChange = (event) => {
+    setDateFilter(event.target.value);
+  };
+
+  const handleProductFilterChange = (event) => {
+    setProductFilter(event.target.value);
+  };
 
 
   EventBus.on("logout", () => {
@@ -62,7 +67,91 @@ const Profile = () => {
     setCheckin(state)
   };
 
+  useEffect(() => {
+    // Filtro de data
+    let filteredData = payments;
+    const now = dayjs();
 
+    if (dateFilter === "last30Days") {
+      filteredData = payments.filter(payment =>
+        dayjs(payment.created_at).isAfter(now.subtract(30, "days"))
+      );
+    } else if (dateFilter === "last7Days") {
+      filteredData = payments.filter(payment =>
+        dayjs(payment.created_at).isAfter(now.subtract(7, "days"))
+      );
+    } else if (dateFilter === "lastDay") {
+      filteredData = payments.filter(payment =>
+        dayjs(payment.created_at).isAfter(now.subtract(1, "day"))
+      );
+    }
+
+    // Filtro de produto
+    if (productFilter !== "all") {
+      filteredData = filteredData.filter(payment => payment.products === productFilter);
+    }
+
+    setFilteredPayments(filteredData);
+
+    // Atualiza os gráficos com os dados filtrados
+    updateCharts(filteredData);
+  }, [dateFilter, productFilter, payments]);
+
+  const updateCharts = (data) => {
+    const groupedData = data.reduce((acc, payment) => {
+      const product = payment.products;
+      const totalPriceString = payment.total_price.replace(/[^0-9,.]/g, "").replace(",", ".");
+      const totalPrice = parseFloat(totalPriceString);
+
+      if (!isNaN(totalPrice)) {
+        if (!acc[product]) acc[product] = {};
+        if (!acc[product][totalPrice]) acc[product][totalPrice] = 0;
+        acc[product][totalPrice] += 1;
+      }
+
+      return acc;
+    }, {});
+
+    const datasets = Object.keys(groupedData).map((product, index) => {
+      return {
+        label: product,
+        data: Object.entries(groupedData[product]).map(([price, count]) => ({
+          x: parseFloat(price),
+          y: count
+        })),
+        borderColor: ["#43a047", "#e53935", "#ff9800", "#1e88e5"][index % 4],
+        backgroundColor: ["#43a047", "#e53935", "#ff9800", "#1e88e5"][index % 4],
+        fill: false,
+        tension: 0.4
+      };
+    });
+
+    setLineData({ datasets });
+
+    const frequencyData = data.reduce((acc, payment) => {
+      const price = payment.total_price;
+      acc[price] = (acc[price] || 0) + 1;
+      return acc;
+    }, {});
+
+    const sortedPrices = Object.entries(frequencyData)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4);
+
+    const totalPayments = data.length;
+    const pieLabels = sortedPrices.map(([price]) => price);
+    const pieDataValues = sortedPrices.map(([_, count]) => ((count / totalPayments) * 100).toFixed(2));
+
+    setPieData({
+      labels: pieLabels,
+      datasets: [
+        {
+          data: pieDataValues,
+          backgroundColor: ["#43a047", "#00b767", "#006336", "#084823"]
+        }
+      ]
+    });
+  };
 
   // UseEffect para buscar os dados quando o componente é montado
   useEffect(() => {
@@ -71,7 +160,32 @@ const Profile = () => {
   const toggleQuestion = (id) => {
     setActiveQuestion(activeQuestion === id ? null : id);
   };
-
+  const pieOptions = {
+    plugins: {
+      legend: {
+        display: false // Remove a legenda
+      },
+      datalabels: {
+        color: '#fff', // Cor do texto
+        formatter: (value, context) => {
+          const label = context.chart.data.labels[context.dataIndex];
+          return `${label}\n${value}%`; // Exibe o valor e a porcentagem
+        },
+        anchor: 'center', // Posiciona o rótulo no centro da fatia
+        align: 'center', // Centraliza o rótulo na fatia
+        offset: 0, // Reduz o offset para evitar que saia da fatia
+        font: {
+          size: 14, // Ajusta o tamanho da fonte para uma melhor visualização
+          weight: 'bold',
+        },
+        padding: 5, // Adiciona um pequeno padding para garantir que o texto não esteja muito próximo da borda
+        clip: false, // Desativa o recorte para que os rótulos não fiquem cortados nas bordas
+      }
+    },
+    responsive: true,
+    maintainAspectRatio: false, // Permite que o gráfico ocupe mais espaço vertical se necessário
+  };
+  
   // UseEffect para buscar os dados quando o componente é montado
   useEffect(() => {
     const fetchPayments = async () => {
@@ -81,34 +195,31 @@ const Profile = () => {
         const filteredPayments = responsePayment.data.filter(payment => payment.customer_email === currentUser.email);
         const links = response.data;
 
-        // Filtrando pelo username e convertendo as datas para objetos Date
         const filtered = links
           .filter(payment => payment.username === currentUser.username)
           .map(payment => ({
             ...payment,
-            createdAt: new Date(payment.createdAt).toISOString(), // Garantindo o formato de data ISO
+            createdAt: new Date(payment.createdAt).toISOString(),
           }));
         setLinks(filtered);
 
-        // Pegando o último link da lista filtrada e configurando com setText
         if (filtered.length > 0) {
-          const lastLink = filtered[filtered.length - 1].link; // substitua '.link' pelo campo correto do link, caso necessário
+          const lastLink = filtered[filtered.length - 1].link;
           setText(lastLink);
         }
 
-        // Agrupando por produto e calculando os totais
+        // Agrupando por produto e calculando a quantidade e o total de vendas por preço
         const groupedData = filteredPayments.reduce((acc, payment) => {
           const product = payment.products;
-          const totalPriceString = payment.total_price.replace("R$", "").replace(/\./g, "").replace(",", ".");
+
+          // Limpeza de `total_price` para remover caracteres não numéricos e suportar tanto R$ quanto números simples
+          const totalPriceString = payment.total_price.toString().replace(/[^0-9,.]/g, "").replace(",", ".");
           const totalPrice = parseFloat(totalPriceString);
 
-          // Verificar se `totalPrice` é um número válido antes de usá-lo
           if (!isNaN(totalPrice)) {
-            if (!acc[product]) {
-              acc[product] = { count: 0, totalValue: 0 };
-            }
-            acc[product].count += 1;
-            acc[product].totalValue += totalPrice;
+            if (!acc[product]) acc[product] = {};
+            if (!acc[product][totalPrice]) acc[product][totalPrice] = 0;
+            acc[product][totalPrice] += 1; // Contagem de vendas por preço
           } else {
             console.warn(`Preço inválido para o pagamento com ID ${payment.id}:`, payment.total_price);
           }
@@ -118,38 +229,52 @@ const Profile = () => {
 
         setPayments(filteredPayments);
 
-        // Verificar se há dados antes de configurar os gráficos
-        const productNames = Object.keys(groupedData);
-        const productCounts = Object.values(groupedData).map(item => item.count);
-        const productTotalValues = Object.values(groupedData).map(item => item.totalValue);
+        // Configuração do gráfico de linha
+        const datasets = Object.keys(groupedData).map((product, index) => {
+          return {
+            label: product,
+            data: Object.entries(groupedData[product]).map(([price, count]) => ({
+              x: parseFloat(price),
+              y: count
+            })),
+            borderColor: ["#43a047", "#e53935", "#ff9800", "#1e88e5"][index % 4],
+            backgroundColor: ["#43a047", "#e53935", "#ff9800", "#1e88e5"][index % 4],
+            fill: false,
+            tension: 0.4
+          };
+        });
 
-        // Apenas configurar `pieData` e `barData` se houver dados válidos
-        if (productNames.length > 0) {
+        setLineData({
+          datasets
+        });
+
+        // Configuração do gráfico de pizza (conforme já implementado)
+        const frequencyData = filteredPayments.reduce((acc, payment) => {
+          const price = payment.total_price;
+          acc[price] = (acc[price] || 0) + 1;
+          return acc;
+        }, {});
+
+        const sortedPrices = Object.entries(frequencyData)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 4);
+        console.log(filteredPayments)
+        const totalPayments = filteredPayments.length;
+        const pieLabels = sortedPrices.map(([price]) => price);
+        const pieDataValues = sortedPrices.map(([_, count]) => ((count / totalPayments) * 100).toFixed(2));
+        console.log(pieDataValues)
+        if (pieLabels.length > 0) {
           setPieData({
-            labels: productNames,
+            labels: pieLabels,
             datasets: [
               {
-                data: productCounts,
-                backgroundColor: ["#43a047", "#e53935", "#ff9800"],
-                hoverBackgroundColor: ["#66bb6a", "#ef5350", "#ffb74d"]
-              }
-            ]
-          });
-
-          setBarData({
-            labels: productNames,
-            datasets: [
-              {
-                label: "Valor Total (R$)",
-                data: productTotalValues,
-                backgroundColor: ["#43a047", "#e53935", "#ff9800"],
-                barPercentage: 0.5, // Ajusta a largura da barra (0 a 1)
-                categoryPercentage: 0.8, // Ajusta o espaçamento entre as barras
+                data: pieDataValues,
+                backgroundColor: ["#43a047", "#00b767", "#006336", "#084823"]
               }
             ]
           });
         }
-        console.log(productTotalValues)
+
       } catch (error) {
         console.error('Erro ao buscar pagamentos:', error);
       }
@@ -157,6 +282,7 @@ const Profile = () => {
 
     fetchPayments();
   }, [currentUser.email]);
+
 
 
 
@@ -775,23 +901,87 @@ const Profile = () => {
 
       {/* Nova Div contendo os gráficos */}
       <div style={{
-        flex: 1, marginLeft: 30, backgroundColor: '#30302f80', borderRadius: '15px', height: '40%',marginTop:'100px' }}>
-        {/* Gráfico de Pizza - apenas se houver dados */}
-        {pieData?.datasets?.[0]?.data?.length > 0 && (
-          <div style={{ marginBottom: 50, marginTop: 20 }}>
-            <Typography variant="h6" style={{ textAlign: "center" }}>Gráfico de Pizza</Typography>
-            <Pie data={pieData} style={{ maxHeight: 300 }} />
-          </div>
-        )}
+        flex: 1,
+        marginLeft: 60,
+        backgroundColor: '#30302f80',
+        borderRadius: '15px',
+        marginTop: '100px'
+      }}>
+  <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+    {/* Dropdown para filtro de data */}
+    <FormControl>
+      <Typography>Filtro de Data</Typography>
+      <Select value={dateFilter} onChange={handleDateFilterChange}>
+        <MenuItem value="all">Todo o Tempo</MenuItem>
+        <MenuItem value="last30Days">Últimos 30 dias</MenuItem>
+        <MenuItem value="last7Days">Últimos 7 dias</MenuItem>
+        <MenuItem value="lastDay">Último dia</MenuItem>
+      </Select>
+    </FormControl>
 
-        {/* Gráfico de Barras - apenas se houver dados */}
-        {barData?.datasets?.[0]?.data?.length > 0 && (
-          <div>
-            <Typography variant="h6" style={{ textAlign: "center" }}>Gráfico de Barras</Typography>
-            <Bar data={barData} style={{ marginLeft: 100, maxHeight: 300 }} />
-          </div>
-        )}
-      </div>
+    {/* Dropdown para filtro de produto */}
+    <FormControl>
+      <Typography>Filtro de Produto</Typography>
+      <Select value={productFilter} onChange={handleProductFilterChange}>
+        <MenuItem value="all">Todos os Produtos</MenuItem>
+        {Array.from(new Set(payments.map(payment => payment.products))).map(product => (
+          <MenuItem key={product} value={product}>{product}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  </div>
+
+  {/* Gráfico de Pizza - apenas se houver dados */}
+ {/* Gráfico de Pizza - apenas se houver dados */}
+{pieData?.datasets?.[0]?.data?.length > 0 && (
+  <div style={{
+    marginBottom: 50,
+    marginTop: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  }}>
+    <div style={{
+      width: '300px', // Ajuste a largura conforme necessário
+      height: '300px', // Ajuste a altura conforme necessário
+      position: 'relative'
+    }}>
+      <Pie data={pieData} options={pieOptions} />
+    </div>
+  </div>
+)}
+
+
+  {/* Gráfico de Barras - apenas se houver dados */}
+  {/* {lineData?.datasets?.length > 0 && (
+    <div>
+      <Typography variant="h6" style={{ textAlign: "center" }}>Gráfico de Linha</Typography>
+      <Line
+        data={lineData}
+        options={{
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Valor de Venda (R$)"
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Quantidade Vendida"
+              },
+              beginAtZero: true
+            }
+          }
+        }}
+        style={{ marginLeft: 100, maxHeight: 300 }}
+      />
+    </div>
+  )} */}
+</div>
+
 
 
     </div >
