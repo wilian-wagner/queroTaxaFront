@@ -775,7 +775,7 @@ const Profile = () => {
 
       {/* Nova Div contendo os gráficos */}
       <div style={{
-        flex: 1, marginLeft: 20, backgroundColor: '#30302f80', borderRadius: '15px', height: '40%',marginTop:'80px' }}>
+        flex: 1, marginLeft: 30, backgroundColor: '#30302f80', borderRadius: '15px', height: '40%',marginTop:'100px' }}>
         {/* Gráfico de Pizza - apenas se houver dados */}
         {pieData?.datasets?.[0]?.data?.length > 0 && (
           <div style={{ marginBottom: 50, marginTop: 20 }}>

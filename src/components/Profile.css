@@ -1,112 +1,121 @@
-body {
-    background-image: url('./../../public/assets/fundo_profile.png') !important ;
 
-    /* ackground-image: url('/path/to/your/background-image.jpg'); */
-    background-size: 100vw 100vh;
+
+body {
+    background-image: url('./../../public/assets/fundo_profile.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment:local;
     font-family: Arial, sans-serif;
     color: #fff;
-    justify-content: center;
-    /* Centraliza horizontalmente */
+    display: block; /* Alterado para block */
+    flex-direction: column;
     align-items: center;
-    align-content: center;
-    /* Centraliza verticalmente */
-    height: 100vh;
-    /* Garante que o corpo ocupe toda a altura da viewport */
-    margin: 0;
-    /* Remove qualquer margem do body */
-    background-repeat: no-repeat; /* Impede que a imagem se repita */
-    background-position: center center;
-    background-attachment: fixed;
-
-
+    justify-content: flex-start;
 }
-.tag-topo {
-    position: absolute;
-    top: 10px;
-    left: 30px;
-    background-color: transparent;
+.container-profile {
+    display: flex; margin-right: 50%;
+}
+
+
+.pagamento, .ajuda, .tabelas-taxas, .button-group, .button-group-2, .typography-data-container, .tabelas {
+}
+
+/* Div para a barra do topo */
+.top-bar {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
     color: white;
-    padding: 12px;
-    border-radius: 5px;
-    z-index: 1000; /* Garante que esteja sobre outros elementos */
+    z-index: 1000;
+    background-color: transparent;
+    box-sizing: border-box;
+}
+
+
+/* Estilo para o link e texto */
+.tag-topo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #08fe95;
 }
 
 .pagamento {
-    margin-left: 30px;
-    /* background-color: #414040; */
-    background-color: white;
-    width: 100%;
-    display: 'flex';
-    justify-content: 'space-between';
-    align-items: 'center';
-    gap: '10px';
-    height: 50%;
-    background-color: #30302f80;
-    border-radius: 15px;
-    margin-top: 80px;
+    margin-top: 100px !important;
+    margin-left: 30px !important;
+    background-color: #30302f80 !important;
+    width: 100% !important;
+    border-radius: 15px !important;
+    gap: 10px !important;
+    height: 50vh !important;
 }
 
-
 .ajuda {
-    margin-top: 80px;
-    /* background-color: #414040; */
-    width: 100%;
-    display: 'flex';
-    justify-content: 'space-between';
-    align-items: 'center';
-    gap: '10px';
-    height: 90% !important;
-    background-color: #30302f80;
-    border-radius: 15px;
+    margin-top: 30px !important;
+    width: 100% !important;
+    flex-direction: column !important;
+    background-color: #30302f80 !important;
+    border-radius: 15px !important;
 }
 
 .ajuda div {
     background-color: transparent;
 }
-.button-group, .button-group-2 {
+
+.button-group,
+.button-group-2 {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 800px; /* Largura fixa */
+    max-width: 800px;
     gap: 10px;
-    margin: 0 auto; /* Centraliza na página */
+    margin: 0 auto;
     padding: 20px;
 }
-
 
 .typography-data-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 680px;
-    max-width: 800px; /* Mesma largura para centralização */
+    max-width: 800px;
     margin-top: 5px;
     gap: 10px;
 }
 
-
 .tabelas-taxas {
-    display: block;
-
     margin-left: 30px;
-    margin-top: 20px;
-    width: '100%';
-    justify-content: 'space-between';
-    align-items: 'center';
-    gap: '10px';
-    height: '100%';
+    margin-top: 100px;
     background-color: #30302f80;
     border-radius: 15px;
     align-items: center;
-    /* Alinha os itens ao centro verticalmente */
 }
-.tabelas-taxas h1{
+
+.tabelas-taxas h1 {
     padding-top: 15px;
-font-size: medium;
-display: flex;
-flex-direction: column;
-font-weight: bolder;
+    font-size: medium;
+    display: flex;
+    flex-direction: column;
+    font-weight: bolder;
 }
 
 .toggle-button {
@@ -129,6 +138,7 @@ font-weight: bolder;
     transition: transform 0.2s ease;
     margin-left: 20px;
 }
+
 .toggle-button-tabela img {
     width: 300px;
     height: 500px;
@@ -138,21 +148,21 @@ font-weight: bolder;
     width: 180px;
     height: 200px;
 }
-.selecionar-taxa div{
-    display: block;
 
+.selecionar-taxa div {
+    display: block;
 }
-.selecionar-taxa h3{
+
+.selecionar-taxa h3 {
     padding-top: 15px;
     font-size: medium;
     display: flex;
     text-align: center;
     margin-left: 30px;
-
 }
+
 button.selecionar-taxa {
     margin-left: 60px;
-    /* Afasta o botão horizontalmente das imagens */
     background-color: #09ce78;
     color: #fff;
     border-radius: 5px;
@@ -164,6 +174,7 @@ button.selecionar-taxa {
     border-radius: 10px;
     background-color: #08fe95;
 }
+
 .toggle-button-tabela.active {
     transform: scale(1.1);
     border-radius: 10px;
@@ -182,7 +193,6 @@ button.selecionar-taxa {
 
 .toggle-page {
     width: 60%;
-    /* Cor de fundo quando desativado */
     margin-top: 15px;
     border-radius: 10px;
     color: white;
@@ -197,9 +207,7 @@ button.selecionar-taxa {
 .toggle-button,
 .toggle-page {
     border: none;
-
     background-color: #4d4d4c5d;
-    /* Cor de fundo quando desativado */
     cursor: pointer;
     padding: 10px;
     transition: transform 0.2s ease;
@@ -211,14 +219,12 @@ button.selecionar-taxa {
     transform: scale(1.1);
     border-radius: 10px;
     background-color: #08fe95;
-    /* Cor de fundo quando ativado */
 }
 
 .toggle-page-tabela {
     flex: auto;
     width: 60%;
-    background-color:  #08fe95;
-    /* Cor de fundo quando desativado */
+    background-color: #08fe95;
     margin-top: 15px;
     border-radius: 10px;
     color: white;
@@ -228,13 +234,14 @@ button.selecionar-taxa {
     padding: 10px;
     transition: transform 0.2s ease;
 }
-.tabelas{
-    display: flex;
 
+.tabelas {
+    display: flex;
 }
+
 .dropdown-container {
     position: relative;
-    width: 200px; /* ajuste a largura conforme necessário */
+    width: 200px;
     padding-left: 20px;
     margin-top: 30px;
     margin-left: 150px;
@@ -249,34 +256,33 @@ button.selecionar-taxa {
     font-size: 16px;
     border-radius: 4px;
     cursor: pointer;
-    border: 2px solid white; /* adiciona a borda branca */
+    border: 2px solid white;
 }
 
 .dropdown-container::after {
-    content: '▼'; /* seta */
+    content: '▼';
     position: absolute;
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: gray; /* cor da seta */
-    pointer-events: none; /* evita clique na seta */
+    color: gray;
+    pointer-events: none;
 }
-  
-  .img-dropdown img{
+
+.img-dropdown img {
     margin-left: 150px;
-  }
-  .ajuda-btn button{
+}
+
+.ajuda-btn {
+    padding-top: 20px;
+}
+
+.ajuda-btn button {
     border: none;
     border-radius: 10px;
     cursor: pointer;
     padding: 10px;
     margin-top: 15px;
-    transition: transform 0.2s ease;
     margin-left: 20px;
     background-color: #08fe95;
-
-}
-.ajuda-btn {
-    padding-top: 20px;
-
 }
