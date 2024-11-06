@@ -374,18 +374,17 @@ const Profile = () => {
     'https://pay.kirvano.com/f29d27fb-d1b9-4cec-8397-e2d494af6967'
   ]
   const link_payments_queropromo = [
-    'https://pay.kirvano.com/e4f1c93c-e3d7-4710-ba11-86ed14ef9c9e',
-    'https://pay.kirvano.com/d5517028-0061-400f-ad8e-d746ddcb48c2',
-    'https://pay.kirvano.com/a7c1fb4a-6670-4ce1-abb1-26f77b4c647f',
-    'https://pay.kirvano.com/9d4834b0-dd79-42d7-87ae-8d45289b83a7',
-    'https://pay.kirvano.com/376b43db-7b94-4b5f-8aed-1b4819cbe977',
-    'https://pay.kirvano.com/8b08688b-39a2-4a92-bccb-563514944e68',
-    'https://pay.kirvano.com/ec7b7cec-3c52-4131-bd7f-2a5be5e7111a',
-    'https://pay.kirvano.com/22bb7ca4-d4c0-49e8-9aca-83228d98d47d',
-    'https://pay.kirvano.com/abce8275-bbc4-4024-8a01-f9ecf5762f03',
-    'https://pay.kirvano.com/86825353-532c-4206-8886-8c740d89f672',
-    'https://pay.kirvano.com/f9135920-8782-48a1-9e8e-0bfcb45ba0e3',
-
+    'https://pay.kirvano.com/07e945c7-29e2-4515-a1a9-81371c3c1c14',
+    'https://pay.kirvano.com/7d9ba993-09c5-405b-bfa3-d5be6767a30a',
+    'https://pay.kirvano.com/f2ac330b-56dc-46b3-ab72-396773c88ad5',
+    'https://pay.kirvano.com/33ac8836-47b1-42d8-9379-07b2f1219002',
+    'https://pay.kirvano.com/fc0cb20c-f379-470b-bef0-1c143dd18914',
+    'https://pay.kirvano.com/2956a323-ab87-494a-a3fb-e5953a31f52d',
+    'https://pay.kirvano.com/81f62734-583d-4a0c-9db3-ddfd98770940',
+    'https://pay.kirvano.com/66db835a-fc97-48e6-aaad-1b44068f3594',
+    'https://pay.kirvano.com/896256f1-f476-4848-b6e9-0e3f5305b5b2',
+    'https://pay.kirvano.com/402b118d-eb60-4749-82cf-18bb9cc3e9c2',
+    'https://pay.kirvano.com/779a8a7f-ccfc-4a09-b4e4-6478ba89776d'
   ]
   const handleSelectChange = (event) => {
     const index = event.target.selectedIndex;
