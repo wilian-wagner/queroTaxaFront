@@ -465,6 +465,10 @@ const Profile = () => {
     console.log("Índice selecionado:", index);
   };
   const handleButtonClick = (id) => {
+    if (id == 1) {
+      alert('A opção que você escolheu não está disponível no momento.')
+      return
+    }
     setMaquina(id);
   };
 
@@ -604,7 +608,9 @@ const Profile = () => {
         </div>
 
       </div>)}
-      {selectedMaquina === 1 && checkin == 0 && linkPage == 0 && maquina == 1 && (<div className="tabelas-taxas" >
+      {/* ALterar para 1 colocar quiero facil de novo */}
+
+      {selectedMaquina === 1 && checkin == 0 && linkPage == 0 && maquina == 'alterar para 1' && (<div className="tabelas-taxas" >
         <div className="tabelas">
           {imagnes_taxas_facil.map((img) => (
             <button
