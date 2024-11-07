@@ -19,7 +19,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="container">
-      <div className="form-container">
+      <div className="form-container-password">
         <h2>Esqueci minha senha</h2>
         <form onSubmit={handleSubmit}>
           <input

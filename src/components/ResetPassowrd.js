@@ -30,7 +30,7 @@ const ResetPassword = () => {
 
   return (
     <div className="container">
-      <div className="form-container">
+      <div className="form-container-password">
         <h2>Redefinir Senha</h2>
         <form onSubmit={handleSubmit}>
           <input
@@ -49,7 +49,14 @@ const ResetPassword = () => {
           />
           <button type="submit">Redefinir Senha</button>
         </form>
-        {message && <p>{message}</p>}
+        {message && (
+          <div>
+          <p>{message}</p>
+          <div className="register-link">
+            <a href="/login">Voltar ao login</a><br></br>
+
+          </div>
+      </div>)}
       </div>
     </div>
   );
