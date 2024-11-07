@@ -287,72 +287,126 @@ button.selecionar-taxa {
     background-color: #09ce78;
 }
 @media (max-width: 768px) {
-    /* Ajuste para o cabeçalho */
+    /* Fundo da página cobrindo toda a tela */
+    body {
+        background-image: url('./../../public/assets/fundo_profile.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Ajuste para o container principal */
+    .container-profile {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        padding: 10px;
+        box-sizing: border-box;
+        background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente para destacar conteúdo */
+    }
+
+    /* Top bar ajustada para centralização */
     .top-bar {
+        display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         padding: 10px;
         font-size: 14px;
         height: auto;
+        background-color: rgba(0, 0, 0, 0.7); /* Fundo mais escuro para contraste */
+        width: 100%;
     }
 
     .tag-topo {
         font-size: 14px;
-        margin-bottom: 5px;
+        text-align: center;
+        margin: 0;
+        width: 100%;
     }
 
-    /* Ajuste para os botões principais */
+    /* Ajustes dos botões de navegação */
     .page {
         flex-direction: column;
-        gap: 5px;
         width: 100%;
         text-align: center;
+        gap: 10px;
+        margin-top: 10px;
     }
 
-    /* Botões de ação */
+    /* Botões principais */
     .toggle-button, .toggle-page, .toggle-page-tabela {
         width: 100%;
-        padding: 8px;
+        padding: 12px;
         font-size: 14px;
     }
 
-    /* Ajuste das imagens das máquinas e taxas */
+    /* Ajuste das imagens para ficarem menores e centralizadas */
     .tabelas img, .button-group img {
-        width: 80px;
+        width: 70px;
         height: auto;
+        margin: 0 auto;
+        display: block;
     }
 
-    /* Conteúdo dos gráficos */
-    .chart-container {
-        width: 100%;
-        padding: 10px;
-        height: auto;
-    }
-
-    /* Ajuste para o contêiner das perguntas e respostas */
+    /* Ajustes para a seção de ajuda */
     .ajuda {
         width: 100%;
         padding: 10px;
-    }
-
-    /* Ajuste para as perguntas frequentes */
-    .ajuda div {
-        font-size: 14px;
+        margin-top: 15px;
+        background-color: rgba(0, 0, 0, 0.5); /* Fundo transparente para destacar */
     }
 
     .ajuda-btn {
         display: flex;
         flex-direction: column;
         gap: 5px;
+        width: 100%;
     }
 
-    /* Caixa de valor líquido */
+    .ajuda div {
+        font-size: 14px;
+        text-align: center;
+        padding: 5px;
+        background-color: rgba(255, 255, 255, 0.1); /* Fundo levemente transparente */
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    /* Caixa de Valor Líquido */
     .value-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
         padding: 10px;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
         margin-top: 10px;
+        border-radius: 10px;
+    }
+
+    /* Ajuste para os gráficos */
+    .chart-container {
+        width: 100%;
+        height: auto;
+        padding: 10px;
+        margin-top: 15px;
+    }
+
+    /* Ajuste do dropdown e botão de cópia */
+    .dropdown-container, .img-dropdown {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .selecionar-taxa {
+        width: 100%;
+        font-size: 14px;
     }
 }
