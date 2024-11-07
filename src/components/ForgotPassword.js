@@ -1,5 +1,7 @@
+// ForgotPassword.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import './ForgotPassword.css'; // Importa o arquivo CSS
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -16,19 +18,21 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div>
-      <h2>Esqueci minha senha</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Digite seu e-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button type="submit">Enviar link de redefinição</button>
-      </form>
-      {message && <p>{message}</p>}
+    <div className="container">
+      <div className="form-container">
+        <h2>Esqueci minha senha</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Digite seu e-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit">Enviar link de redefinição</button>
+        </form>
+        {message && <p>{message}</p>}
+      </div>
     </div>
   );
 };
