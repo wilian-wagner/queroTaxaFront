@@ -32,6 +32,10 @@ const ForgotPassword = () => {
           <button type="submit">Enviar link de redefinição</button>
         </form>
         {message && <p>{message}</p>}
+        <div className="register-link">
+          <a href="/login">Voltar ao login</a><br></br>
+
+        </div>
       </div>
     </div>
   );
