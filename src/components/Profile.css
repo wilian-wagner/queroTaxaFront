@@ -176,7 +176,8 @@ button.selecionar-taxa {
 }
 
 .toggle-button-tabela.active {
-    transform: scale(1.1);
+    margin-top: 15px;
+    transform: scale(1.005);
     border-radius: 10px;
     background-color: #09ce78;
 }
@@ -237,6 +238,7 @@ button.selecionar-taxa {
 
 .tabelas {
     display: flex;
+    margin-right: 20px;
 }
 
 .dropdown-container {

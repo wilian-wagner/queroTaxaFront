@@ -584,7 +584,7 @@ const Profile = () => {
               className={`toggle-button-tabela ${selectedButtonTabelaTaxa === img.id ? 'active' : ''}`}
               onClick={() => handleButtonClickTabelaTaxa(img.id)}
             >
-              <img key={img.id} src={img.image} height={600} width={400} alt={img.label} />
+              <img key={img.id} src={img.image} height={550} width={400} alt={img.label} />
             </button>
           ))}</div>
         <h1 style={{ textAlign: "center", marginTop: "30px" }}>
@@ -618,7 +618,7 @@ const Profile = () => {
               className={`toggle-button-tabela ${selectedButtonTabelaTaxa === img.id ? 'active' : ''}`}
               onClick={() => handleButtonClickTabelaTaxa(img.id)}
             >
-              <img key={img.id} src={img.image} height={600} width={400} alt={img.label} />
+              <img key={img.id} src={img.image} height={550} width={400} alt={img.label} />
             </button>
           ))}</div>
         <h1 style={{ textAlign: "center", marginTop: "30px" }}>
@@ -645,7 +645,7 @@ const Profile = () => {
       {checkin === 1 && linkPage == 0 && maquina == 0 && (<div className="tabelas-taxas" >
         <div className="tabelas" width={'50%'}>
 
-          <img src={imagnes_taxas[selectedButtonTabelaTaxa].image} height={700} width={400} />
+          <img src={imagnes_taxas[selectedButtonTabelaTaxa].image} style={{marginTop:'20px',marginBottom:'20px'}} height={700} width={400} />
           <div className="img-dropdown">
             <img src={buttons_maquinas[maquina].image} width={200} height={250} />
             <div className="dropdown-container">
@@ -967,8 +967,10 @@ const Profile = () => {
                         {q.answer}
                       </div>
                     )}
+
                   </div>
                 ))}
+       <br></br>
               </div>
             </div>
           </div>
