@@ -111,7 +111,9 @@ const Login = () => {
             {loading ? <span className="spinner"></span> : "Entrar"}
           </button>
           <div className="register-link">
-            <a href="/register">Ainda não possui conta</a>
+            <a href="/register">Ainda não possui conta</a><br></br>
+            <a href="/forgot-password">Esqueceu sua senha?</a>
+
           </div>
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
 
