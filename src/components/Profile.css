@@ -286,87 +286,73 @@ button.selecionar-taxa {
     margin-left: 20px;
     background-color: #09ce78;
 }
-/* Ajustes para telas menores (mobile) */
 @media (max-width: 768px) {
-    /* Ajuste de background para mobile */
-    body {
-        background-size: contain;
-        background-attachment: scroll;
-    }
-
-    .container-profile {
-        flex-direction: column;
-        margin: 0;
-        padding: 10px;
-    }
-
+    /* Ajuste para o cabeçalho */
     .top-bar {
-        padding: 0 10px;
-        font-size: 14px;
-        height: 60px;
-    }
-
-    .pagamento, .ajuda, .tabelas-taxas {
-        width: 100% !important;
-        margin-left: 0 !important;
-        margin-top: 20px !important;
+        flex-direction: column;
+        align-items: center;
         padding: 10px;
         font-size: 14px;
+        height: auto;
     }
 
-    .tabelas {
-        flex-direction: column;
-        align-items: center;
+    .tag-topo {
+        font-size: 14px;
+        margin-bottom: 5px;
     }
 
-    .button-group, .button-group-2 {
+    /* Ajuste para os botões principais */
+    .page {
         flex-direction: column;
-        align-items: center;
         gap: 5px;
-        padding: 10px;
-    }
-
-    .typography-data-container {
         width: 100%;
-        padding: 10px;
-    }
-
-    .toggle-button img, .toggle-button-tabela img {
-        width: 100px;
-        height: auto;
-    }
-
-    .dropdown-container {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    .page, .ajuda-btn {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    /* Gráficos */
-    .chart-container {
-        width: 100%;
-        height: auto;
-    }
-
-    /* Ajuste do texto e botões */
-    .selecionar-taxa h3, .toggle-page, .ajuda h1 {
-        font-size: 14px;
         text-align: center;
     }
 
+    /* Botões de ação */
     .toggle-button, .toggle-page, .toggle-page-tabela {
         width: 100%;
         padding: 8px;
+        font-size: 14px;
     }
 
-    /* Valor líquido */
+    /* Ajuste das imagens das máquinas e taxas */
+    .tabelas img, .button-group img {
+        width: 80px;
+        height: auto;
+    }
+
+    /* Conteúdo dos gráficos */
+    .chart-container {
+        width: 100%;
+        padding: 10px;
+        height: auto;
+    }
+
+    /* Ajuste para o contêiner das perguntas e respostas */
+    .ajuda {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* Ajuste para as perguntas frequentes */
+    .ajuda div {
+        font-size: 14px;
+    }
+
+    .ajuda-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    /* Caixa de valor líquido */
     .value-container {
+        display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
+        padding: 10px;
+        margin-top: 10px;
     }
 }
