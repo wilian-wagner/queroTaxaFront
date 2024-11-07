@@ -14,6 +14,11 @@ import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
 
+const ProtectedRoute = ({ children }) => {
+  const user = AuthService.getCurrentUser();
+  return user ? children : <Navigate to="/login" />;
+};
+
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
@@ -22,7 +27,7 @@ const App = () => {
   useEffect(() => {
     const user = AuthService.getCurrentUser();
 
-    if (user && user.roles) {  // Certifique-se de que user e user.roles existem
+    if (user && user.roles) {  
       setCurrentUser(user);
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
@@ -46,77 +51,20 @@ const App = () => {
 
   return (
     <div>
-
-      {/* <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-
-          </li>
-
-          {showModeratorBoard && (
-            <li className="nav-item">
-              <Link to={"/mod"} className="nav-link">
-                Moderator Board
-              </Link>
-            </li>
-          )}
-
-          {showAdminBoard && (
-            <li className="nav-item">
-              <Link to={"/admin"} className="nav-link">
-                Admin Board
-              </Link>
-            </li>
-          )}
-
-          {currentUser && (
-            <li className="nav-item">
-
-            </li>
-          )}
-        </div>
-
-        {currentUser ? (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
-                {currentUser.username}
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
-                Sair
-              </a>
-            </li>
-          </div>
-        ) : (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
-                Login
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
-                Registre-se
-              </Link>
-            </li>
-          </div>
-        )}
-      </nav> */}
-
-<Routes>
-  <Route path="/" element={<Navigate to="/login" />} /> {/* Redireciona para /login */}
-  <Route path="/home" element={<Home />} />
-  <Route path="/login" element={<Login />} />
-  <Route path="/register" element={<Register />} />
-  <Route path="/profile" element={<Profile />} />
-  <Route path="/user" element={<BoardUser />} />
-  <Route path="/mod" element={<BoardModerator />} />
-  <Route path="/admin" element={<BoardAdmin />} />
-</Routes>
-
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        
+        {/* Rota protegida */}
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/user" element={<ProtectedRoute><BoardUser /></ProtectedRoute>} />
+        <Route path="/mod" element={<ProtectedRoute><BoardModerator /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><BoardAdmin /></ProtectedRoute>} />
+        
+        {/* Redireciona para /login caso nenhuma rota seja encontrada */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
     </div>
   );
 };

@@ -286,3 +286,87 @@ button.selecionar-taxa {
     margin-left: 20px;
     background-color: #09ce78;
 }
+/* Ajustes para telas menores (mobile) */
+@media (max-width: 768px) {
+    /* Ajuste de background para mobile */
+    body {
+        background-size: contain;
+        background-attachment: scroll;
+    }
+
+    .container-profile {
+        flex-direction: column;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .top-bar {
+        padding: 0 10px;
+        font-size: 14px;
+        height: 60px;
+    }
+
+    .pagamento, .ajuda, .tabelas-taxas {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-top: 20px !important;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .tabelas {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-group, .button-group-2 {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        padding: 10px;
+    }
+
+    .typography-data-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .toggle-button img, .toggle-button-tabela img {
+        width: 100px;
+        height: auto;
+    }
+
+    .dropdown-container {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .page, .ajuda-btn {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Gráficos */
+    .chart-container {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Ajuste do texto e botões */
+    .selecionar-taxa h3, .toggle-page, .ajuda h1 {
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .toggle-button, .toggle-page, .toggle-page-tabela {
+        width: 100%;
+        padding: 8px;
+    }
+
+    /* Valor líquido */
+    .value-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
